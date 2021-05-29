@@ -1,0 +1,40 @@
+下载加手脚cli:   npm install -g @imooc-cli/core
+imooc-cli --version
+imooc-cli init
+
+选择 组件---慕课乐高标准项目模板
+
+npm run serve
+
+那么问题来了，用vue3 如何从零搭建一个ts项目呢？
+
+1，代码规范 配置eslint 跟 prettier 
+   配置太麻烦了，现在这个项目就暂时不用了
+
+2，建立 src/shims-vue.d.ts 文件，ts 文件里面导入以.vue结尾的文件就不会报错
+
+3, 下载第三方组件库ant-design-vue
+   npm install ant-design-vue@next --save
+
+4,将 ant-design-vue 放进app当中
+  修改main.ts 文件
+
+5,下载vue-router 
+  npm install vue-router@4 --save
+
+6,写views文件夹里的三个页面，跟component里面的一个组件,每行代码一行一行读
+  component的显示，
+  路由跳转，
+  路由的 meta 
+  
+
+7,写路由 routes/index.ts
+
+8,写App.vue 文件
+
+9,将 vue-router  放进app当中
+  修改main.ts 文件
+
+
+
+
