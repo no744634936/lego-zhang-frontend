@@ -3,14 +3,14 @@
 <div class="work-detail-container">
   <a-row type="flex" justify="center" >
     <a-col span="8" class="cover-img">
-      <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" alt="">
+      <img :src="template.coverImg" alt="">
     </a-col>
     <a-col :span="8">
-      <h2>test</h2>
-      <p>tes</p>
+      <h2>{{template.title}}</h2>
+      <p>{{template.title}}</p>
     <div class="author">
       <a-avatar>V</a-avatar>
-      该模版由 <b>test</b> 创作
+      该模版由 <b>{{template.author}}</b> 创作
     </div>
     <div class="bar-code-area" >
       <span>扫一扫，手机预览</span>
@@ -28,24 +28,35 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent ,computed} from 'vue';
 import {useRoute,useRouter} from "vue-router";
+import {useStore} from "vuex"
+
+// 写成/store/index 不能写/store/index.ts
+import {TemplateProps} from "../store/template"
+import {GlobalDataProps} from "../store/index"
+
 export default defineComponent({
 
     setup(){
         //獲取url的中的数据
         const route=useRoute();
-        //定义路由的行为，比如url跳转
-        const router=useRouter();
 
-        // 两秒后跳转路由到/template/1
-        // 只跳转一次
-        setTimeout(()=>{
-            router.push("/template/1");
-        },2000);
+        // 将store里的数据放进template里面去。
+        //写 <GlobalDataProps>的好处就是，使用store这个变量的时候会有代码提醒。
+        //写 <TemplateProps>的好处就是，使用template这个变量的时候会有代码提醒。
+
+        const store=useStore<GlobalDataProps>();
+        const currentId=route.params.id as string
+        const template=computed<TemplateProps>(()=>store.getters.getTemplateById(parseInt(currentId)))
+       
+        console.log(currentId);
+        console.log(template);
+        
 
         return{
-            route
+            route,
+            template
         };
     }
 
