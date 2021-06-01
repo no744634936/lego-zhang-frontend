@@ -10,6 +10,7 @@
   "dependencies": {
     "ant-design-vue": "^2.1.6",
     "core-js": "^3.6.5",
+    "uuidv4": "^6.2.8",
     "vue": "^3.0.11",
     "vue-router": "^4.0.8",
     "vuex": "^4.0.1"

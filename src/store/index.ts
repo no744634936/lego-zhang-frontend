@@ -1,21 +1,20 @@
 import {createStore} from 'vuex';
 import templates,{TemplatesProps} from "./template"
 import user,{UserProps} from './user'
-
-
+import editor,{EditorDataProps} from './editor'
 
 // 全局结构
 export interface GlobalDataProps{
     user: UserProps;
     templates: TemplatesProps;
+    editor: EditorDataProps;
 }
 
-
-// createStore 可以接受一个泛型,将全局结构传递下去
-const store=createStore<GlobalDataProps>({
+const store=createStore({
     modules: {
         user,
         templates,
+        editor,
     }
 });
 

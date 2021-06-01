@@ -17,6 +17,8 @@ export default defineComponent({
   setup(){
       const store=useStore<GlobalDataProps>();
       const testData = computed(() => store.state.templates.data)
+      console.log("testData",testData);
+      
       
     //  这是一开始建页面布局用的testData
     //   const testData=reactive([
