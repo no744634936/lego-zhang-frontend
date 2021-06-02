@@ -10,9 +10,16 @@
       <a-layout-content class="preview-container">
         <p>画布区域</p>
         <div class="preview-list" id="canvas-area">
-          <div v-for="component in components" :key="component.id">
+        <!-- 除了直接导入 <LText/> -->
+        <!-- component tag 可以根据component的name 来调用LText -> :is="component.name"  -->
+          <component 
+            v-for="component in components" 
+            :is="component.name" 
+            :key="component.id" 
+            v-bind="component.props"
+          >
               {{component.props.text}}
-          </div>
+          </component>
         </div>
       </a-layout-content>
     </a-layout>
@@ -28,11 +35,20 @@ import { useStore } from 'vuex';
 import { defineComponent ,computed} from 'vue';
 import { GlobalDataProps } from '../store/index';
 
+
+import LText from "../components/LText.vue"
+
 export default defineComponent({
+    name:"editor",
+
+    components:{
+        LText,
+    },
+
     setup(){
         const store=useStore<GlobalDataProps>();
         const components=computed(()=>{return store.state.editor.components}) 
-        console.log(components);
+        console.log("components",components);
         
         return {
             components

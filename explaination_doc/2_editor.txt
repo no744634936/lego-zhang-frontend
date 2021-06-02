@@ -1,3 +1,9 @@
 npm install uuidv4 --save 
 
 建立一个store/editor.ts文件 并将数据导入  view/Editor.vue里去
+
+// lodash-es 可以很方便的对object 进行操作
+npm i lodash-es --save
+
+//lodash-es的typescript解释文件
+npm install --save-dev @types/lodash-es  

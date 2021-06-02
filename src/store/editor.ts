@@ -21,11 +21,11 @@ export interface EditorDataProps{
   // 当然最后保存的时候还有有一些项目信息，这里并没有写出，等做到的时候再补充
 }
 
-const testComponents: ComponentDataProps[]=[
-    {id:uuid(), name:'l-text',props:{text: 'hello'}},
-    {id:uuid(), name:'l-text',props:{text: 'hello2'}},
-    {id:uuid(), name:'l-text',props:{text: 'hello3'}}
-]
+const testComponents: ComponentDataProps[]= [
+    { id: uuid(), name: 'l-text', props: { text: 'hello', fontSize: '30px', color: 'red', 'lineHeight': '1', textAlign: 'left', fontFamily: '' }},
+    { id: uuid(), name: 'l-text', props: { text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' }},
+    { id: uuid(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' }}
+  ]
 
 const editor: Module<EditorDataProps,GlobalDataProps>={
     state:{

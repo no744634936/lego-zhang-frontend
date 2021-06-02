@@ -25,6 +25,7 @@
                 </div>
             </a-layout-footer>
         </a-layout>
+        <LText/>
     </div>
     <!-- 不需要header跟footer的页面 -->
     <div class="homepage-container" v-else>
@@ -41,7 +42,7 @@ import { useStore } from 'vuex'
 export default defineComponent({
   name: 'App',
   components: {
-    UserProfile
+    UserProfile,
   },
   setup(){
       const route=useRoute()

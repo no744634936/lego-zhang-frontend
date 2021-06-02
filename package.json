@@ -10,12 +10,14 @@
   "dependencies": {
     "ant-design-vue": "^2.1.6",
     "core-js": "^3.6.5",
+    "lodash-es": "^4.17.21",
     "uuidv4": "^6.2.8",
     "vue": "^3.0.11",
     "vue-router": "^4.0.8",
     "vuex": "^4.0.1"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.4",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",
