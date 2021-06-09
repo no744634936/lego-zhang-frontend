@@ -46,8 +46,8 @@ export const text_component_props_with_defalut_value = {
 }
 
 
-// typescript里面，object后面必须要跟上interface 例如{[key: string]: any}
-export const generate_component_props = (props_obj: {[key: string]: any}) => {
+//  使用泛型
+export const generate_component_props =(props_obj: {[key: string]: any})=> {
 
     const component_props: {[key: string]: any}={}
 
@@ -92,6 +92,8 @@ console.log(a.constructor===String); //true
 
 //LText.vue 的props里需要添加component_default__props。
 export const component_default__props=generate_component_props(text_component_props_with_defalut_value)
+
+
 
 // console.log("component_default__props",component_default__props);
 
