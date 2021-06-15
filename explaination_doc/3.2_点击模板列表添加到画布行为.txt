@@ -1,0 +1,17 @@
+第10周 2-5 课程
+defaultTextTemplatesList.ts
+
+store/editor.ts
+
+components/ComponentList.vue
+
+子组件要把数据item传递回去父组件，父组件再将item添加到store中去
+应该怎样做？那就是自定义事件 emit
+
+子组件 里面 @click="onItemClick(item)"
+父组件就可以用 @onItemClick="addItem" 来接收
+addItem 是在父组件中定义的方法，他可以自动接收到onItemClick方法的参数item
+然后 addItem 这个方法 就把item交给store去更新state.components里的数据
+
+
+没有优化泛型

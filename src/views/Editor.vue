@@ -3,23 +3,22 @@
   <a-layout>
     <a-layout-sider width="300" style="background: yellow">
       <div class="sidebar-container">
-        组件列表
+          <!-- onItemClick 这个事件是从ComponentsList.vue那边传过来的 -->
+        <ComponentsList :list="defaultTextTemplatesList" @onItemClick="addItem"></ComponentsList>
       </div>
     </a-layout-sider>
     <a-layout style="padding: 0 24px 24px">
       <a-layout-content class="preview-container">
         <p>画布区域</p>
         <div class="preview-list" id="canvas-area">
-        <!-- 除了直接导入 <LText/> -->
-        <!-- component tag 可以根据component的name 来调用LText -> :is="component.name"  -->
-          <component 
+             <!-- v-bind="component.props"  的意思就是将 component.props 这个对象传给LText里的props 这是v-bind单独使用时的作用-->
+          <LText
             v-for="component in components" 
-            :is="component.name" 
             :key="component.id" 
             v-bind="component.props"
           >
               {{component.props.text}}
-          </component>
+          </LText>
         </div>
       </a-layout-content>
     </a-layout>
@@ -35,23 +34,33 @@ import { useStore } from 'vuex';
 import { defineComponent ,computed} from 'vue';
 import { GlobalDataProps } from '../store/index';
 
-
-import LText from "../components/LText.vue"
+import ComponentsList from "../components/ComponentsList.vue";
+import LText from "../components/LText.vue";
+import {defaultTextTemplatesList} from '../defaultTextTemplatesList'
 
 export default defineComponent({
     name:"editor",
 
     components:{
         LText,
+        ComponentsList,
     },
 
     setup(){
         const store=useStore<GlobalDataProps>();
         const components=computed(()=>{return store.state.editor.components}) 
-        console.log("components",components);
+        // console.log("components",components);
+
+        const addItem=(props: any)=>{
+            // 用store来进行state的更新.
+            // props 是ComponentsList.vue那边的onItemClick(item)中的item
+            store.commit('addComponent',props)
+        }
         
         return {
-            components
+            components,
+            defaultTextTemplatesList,
+            addItem,
         }
     }
 

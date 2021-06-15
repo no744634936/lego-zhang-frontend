@@ -31,6 +31,17 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
     state:{
         components:testComponents,
         currentElement:"",
+    },
+    mutations:{
+        // props 是从Editor.vue 中的 const addItem=(props: any) 方法传过来的
+        addComponent(state,props){
+            const newComponent: ComponentDataProps={
+                id:uuid(),
+                name:"l-text",
+                props
+            }
+            state.components.push(newComponent)
+        }
     }
 }
 
