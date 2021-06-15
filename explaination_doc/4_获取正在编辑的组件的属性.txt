@@ -1,0 +1,10 @@
+1，点击某个组件，该组件呈现选中状态  
+   components/EditWrapper.vue
+   views/Editor.vue
+
+2，将选中的组件的属性，以不同的类型的表单呈现在右侧
+    store/editor.ts
+
+3， 编辑表单中的值，在值更新的同时将值更新至页面
+
+

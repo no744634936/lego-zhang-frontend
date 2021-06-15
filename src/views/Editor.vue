@@ -11,7 +11,8 @@
       <a-layout-content class="preview-container">
         <p>画布区域</p>
         <div class="preview-list" id="canvas-area">
-             <!-- v-bind="component.props"  的意思就是将 component.props 这个对象传给LText里的props 这是v-bind单独使用时的作用-->
+          <!-- v-bind="component.props"  的意思就是将 component.props 这个对象传给LText里的props 这是v-bind单独使用时的作用-->
+          <!-- 
           <LText
             v-for="component in components" 
             :key="component.id" 
@@ -19,11 +20,32 @@
           >
               {{component.props.text}}
           </LText>
+
+          使用EditWrapper 让逻辑跟业务分离
+          像LText 这种类型的html 组件，里面就别写上for ，if 之类的逻辑了，
+          在外面包裹一层wrapper 在这个wrapper里面写逻辑就好
+           -->
+           <EditWrapper 
+                v-for="component in components" 
+                :key="component.id" 
+                @setActive="setElementActive"
+                
+                :id="component.id"
+                :active="component.id===(currentEditedElement&& currentEditedElement.id)"
+            >
+                <LText v-bind="component.props">
+                    {{component.props.text}}
+                </LText>
+           </EditWrapper>
         </div>
       </a-layout-content>
     </a-layout>
     <a-layout-sider width="300" style="background: purple" class="settings-panel">
       组件属性
+      <pre>
+          <!--当 currentEditedElement存在的时候 打印currentEditedElement.props-->
+          {{currentEditedElement&& currentEditedElement.props}}
+      </pre>
     </a-layout-sider>  
   </a-layout>
 </div>
@@ -37,6 +59,7 @@ import { GlobalDataProps } from '../store/index';
 import ComponentsList from "../components/ComponentsList.vue";
 import LText from "../components/LText.vue";
 import {defaultTextTemplatesList} from '../defaultTextTemplatesList'
+import EditWrapper from '../components/EditWrapper.vue';
 
 export default defineComponent({
     name:"editor",
@@ -44,23 +67,32 @@ export default defineComponent({
     components:{
         LText,
         ComponentsList,
+        EditWrapper,
     },
 
     setup(){
         const store=useStore<GlobalDataProps>();
         const components=computed(()=>{return store.state.editor.components}) 
         // console.log("components",components);
+        const currentEditedElement= computed(()=>store.getters.getCurrentEditedElement)
 
         const addItem=(props: any)=>{
             // 用store来进行state的更新.
             // props 是ComponentsList.vue那边的onItemClick(item)中的item
             store.commit('addComponent',props)
         }
+
+        const setElementActive=(id: string)=>{
+            store.commit('setElementActive',id)
+        }
         
         return {
             components,
             defaultTextTemplatesList,
+            EditWrapper,
             addItem,
+            setElementActive,
+            currentEditedElement,
         }
     }
 

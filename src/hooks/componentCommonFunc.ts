@@ -1,6 +1,5 @@
 import { computed, defineComponent } from 'vue'
 import {pick} from "lodash-es";
-import { getConfirmLocale } from 'ant-design-vue/lib/modal/locale';
 
 
 // 所有component共有的方法就抽取出来做成一个hook

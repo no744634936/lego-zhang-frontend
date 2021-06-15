@@ -32,6 +32,8 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
         components:testComponents,
         currentElement:"",
     },
+
+    // 修改state使用motations 获取state里的值使用 getters
     mutations:{
         // props 是从Editor.vue 中的 const addItem=(props: any) 方法传过来的
         addComponent(state,props){
@@ -41,6 +43,15 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
                 props
             }
             state.components.push(newComponent)
+        },
+        // 使用这个方法，store 就知道了现在正在编辑的component是哪一个。
+        setElementActive(state,currentId: string){
+            state.currentElement = currentId
+        }
+    },
+    getters:{
+        getCurrentEditedElement: (state)=>{
+            return  state.components.find(component=>component.id===state.currentElement)
         }
     }
 }
