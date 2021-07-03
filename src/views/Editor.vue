@@ -34,8 +34,6 @@
 import { useStore } from 'vuex';
 import { defineComponent ,computed} from 'vue';
 import { GlobalDataProps } from '../store/index';
-
-
 import LText from "../components/LText.vue"
 
 export default defineComponent({
