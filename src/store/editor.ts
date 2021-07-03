@@ -2,7 +2,7 @@ import {Module} from "vuex"
 import {GlobalDataProps} from "./index"
 import { uuid } from 'uuidv4'
 
-// 这样命名interface比较好一点
+// 这样命名interface比较好一点,表示一个组件里有哪些内容
 export interface ComponentDataProps{
 
   // 这个元素的 属性，属性请详见下面
@@ -13,6 +13,7 @@ export interface ComponentDataProps{
   name: string;
 }
 
+// 表示编辑器里有哪些组件，现在选中的组件的id是什么
 export interface EditorDataProps{
   // 供中间编辑器渲染的数组
   components: ComponentDataProps[];

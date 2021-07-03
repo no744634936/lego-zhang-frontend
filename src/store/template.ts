@@ -26,19 +26,10 @@ const testData: TemplateProps[]=[
 ];
 
 
-//Module 接收两个泛型，第一个泛型是本地这个state的形状，
-//第二个泛型是全局state的形状，也就是下面的rootState
-//泛型的一大优点就是，state跟rootState后面打上点之后，会自动出现个泛型里的属性
 const templates: Module<TemplatesProps,GlobalDataProps>={
-    //本地state
     state:{
         data:testData,
     },
-    //对数据进行筛选的方法可以放在getters里
-    //Note that getters accessed via methods will run each time you call them, and the result is not cached.
-    //getters里的方法使用有点奇怪,是这样的 store.getters.getTemplateById(1)
-    //而不是store.getters.getTemplateById()(1)
-    //const template=computed<TemplateProps>(()=>store.getters.getTemplateById(parseInt(currentId)))
     getters:{
         getTemplateById:(state,getters,rootState)=>{
             return (id: number)=>{

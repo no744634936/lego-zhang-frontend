@@ -1,49 +1,80 @@
 <template>
-  <div class="homepage-container">
-    <a-layout :style="{background: '#fff'}">
-      <a-layout-header class="header">
-        <div class="page-title">
-          <router-link to="/">慕课乐高</router-link>
-        </div>
-        <user-profile :user="user"></user-profile>
-      </a-layout-header>
-      <a-layout-content class="home-layout">
+    <!-- 需要header跟footer的页面 -->
+    <div class="homepage-container" v-if="needHeader">
+        <a-layout>
+            <a-layout-header class="header">
+                <div class="page-title">
+                   <router-link to="/"> zhang-lego</router-link>
+                   
+                </div>
+                <div>
+                    <UserProfile  :user="user"></UserProfile>
+                </div>
+            </a-layout-header>
+
+            <!-- <router-view></router-view> 的作用就是显示根据路由不同显示不同的component -->
+            <a-layout-content>
+                <div class="content-container">
+                   <router-view></router-view>
+                </div>
+            </a-layout-content>
+
+            <a-layout-footer>
+                <div>
+                    © 1996-2020, zhang-lego.com, Inc. or its affiliates
+                </div>
+            </a-layout-footer>
+        </a-layout>
+    </div>
+    <!-- 不需要header跟footer的页面 -->
+    <div class="homepage-container" v-else>
         <router-view></router-view>
-      </a-layout-content>
-    </a-layout>
-    <a-layout-footer>
-      © 慕课网（imooc.com）版权所有 | 津ICP备20000929号-2
-    </a-layout-footer>
-  </div>
+    </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 import { useStore } from 'vuex'
-import { GlobalDataProps } from '../store/index'
-import UserProfile from '../components/UserProfile.vue'
+import UserProfile from '../components/userProfile.vue'
+import {GlobalDataProps} from '../store/index'
+
 export default defineComponent({
-  name: 'Index',
+  name: 'App',
   components: {
     UserProfile
   },
-  setup () {
-    const store = useStore<GlobalDataProps>()
-    const user = computed(() => store.state.user)
-    return {
-      user
-    }
+  setup(){
+      const route=useRoute()
+      const store = useStore<GlobalDataProps>()
+      //needHeader 不是一个响应式对象，用computed包裹之后就可以随着路由的切换做出改变
+      const needHeader=computed(()=>route.meta.needHeader)
+      const user = computed(() => store.state.user)
+    
+      return{
+          needHeader,
+          user,
+      }
   }
-})
+});
 </script>
 
 <style>
+.homepage-container{
+    margin: 0;
+    padding: 0;
+}
+.content-container{
+    margin-top:0.5rem;
+}
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: black;
 }
 .page-title {
   color: #fff;
 }
+
 </style>

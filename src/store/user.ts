@@ -8,7 +8,7 @@ export interface UserProps{
     userName?: string;
 }
 
-// GlobalDataProps在这里好像并没什么用啊，但是又必须要写。
+
 const user: Module<UserProps,GlobalDataProps>={
     state:{
         isLogin:false,

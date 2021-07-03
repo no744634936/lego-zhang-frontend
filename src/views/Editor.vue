@@ -30,7 +30,10 @@ import { GlobalDataProps } from '../store/index';
 
 export default defineComponent({
     setup(){
+        // 传入GlobalDataProps 这个泛型，store.state. 后面的内容就有了自动补全
+        // setup 方法里面可以自动补全，template里面还不能自动补全，有点麻烦
         const store=useStore<GlobalDataProps>();
+
         const components=computed(()=>{return store.state.editor.components}) 
         console.log(components);
         
