@@ -35,11 +35,19 @@ export default defineComponent({
         list:{
             // TemplateProps[]表示是一个拥有TemplateProps 元素的array
             // PropType的作用是类型转换将 Array转换为TemplateProps[]
+            // 这样写的好处就是获取自动补全，比如在setup方法里的 elem 之后打上点以后，就会自动出现TemplateProps里面的各种属性，很方便
+            // template里面也可以获得自动补全比如 item 后面打上点之后，就会出现author，title 等属性
             type:Array as PropType<TemplateProps[]>,
             required:true
         },
     },
     setup(props, context){
+
+        // elem 之后打上点以后，就会自动出现TemplateProps里面的各种属性
+        // props.list.forEach(elem=>{
+        //     console.log(elem.author);
+        // })
+
         console.log(props);
         console.log(props.list);
         

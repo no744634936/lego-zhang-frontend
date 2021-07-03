@@ -17,16 +17,6 @@ export default defineComponent({
   setup(){
       const store=useStore<GlobalDataProps>();
       const testData = computed(() => store.state.templates.data)
-      
-    //  这是一开始建页面布局用的testData
-    //   const testData=reactive([
-    //     {id:1,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    //     {id:2,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    //     {id:3,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    //     {id:4,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    //     {id:5,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    // ]);
-
     return{
         testData,
     };

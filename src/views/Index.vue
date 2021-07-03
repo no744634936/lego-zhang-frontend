@@ -50,9 +50,6 @@ export default defineComponent({
       //needHeader 不是一个响应式对象，用computed包裹之后就可以随着路由的切换做出改变
       const needHeader=computed(()=>route.meta.needHeader)
       const user = computed(() => store.state.user)
-
-      console.log("hshshhs",needHeader);
-      
     
       return{
           needHeader,

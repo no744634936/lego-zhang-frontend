@@ -34,31 +34,18 @@ npm run serve
   然后导入App.vue 看看布局是否正确
 
 
+9,布局写完了之后将数据写进template，下载vuex跟redux一样的功能
+  npm install vuex@next --save
 
+10,建立store
+   store文件夹中的各个文件
 
-
-
-  component里面的组件,每行代码一行一行读
-  component的显示，
-  路由跳转，
-  路由的 meta 
-  
-7,写路由 routes/index.ts，将要显示的view写入 route
-
-8,写App.vue 文件
-
-
-10,下载vuex跟redux一样的功能
-    npm install vuex@next --save
-
-11,建立store
-   store/index.ts文件
-
-12，将 store  放进app当中
+11，将 store  放进app当中
   修改main.ts 文件
 
-13，views/Home.vue 文件里导入store里的数据，
-14，views/TemplateDetail.vue 文件里导入store里getters定义的getTemplateById方法。
+
+12，views/Home.vue 文件里导入store里的数据，
+13，views/TemplateDetail.vue 文件里导入store里getters定义的getTemplateById方法。
     components/TemplateList.vue 里面也使用store里定义的类型。
     components/userProfile  里面也使用store里mutations定义的login，logout方法，
     任何组件中都可以使用useStore这个钩子函数来获取store中的值。
@@ -69,3 +56,8 @@ npm run serve
     例如，视图渲染中使用了数据，数据改变后，视图也会自动更新。
     例如 components/userProfile.vue文件中使用了store/index.ts 中的 login，logout方法，
     来改变 isLogin的值，值改变，视图也会自动更新。
+
+
+14，Vue 的 template 中自动补全 ts 语法的设置
+    setting.json里添加一条语句："vetur.experimental.templateInterpolationService": true,
+    不知为何不行。

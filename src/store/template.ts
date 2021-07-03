@@ -26,9 +26,9 @@ const testData: TemplateProps[]=[
 ];
 
 
-//Module 接收两个泛型，第一个泛型是本地这个state的形状，
-//第二个泛型是全局state的形状，也就是下面的rootState
-//泛型的一大优点就是，state跟rootState后面打上点之后，会自动出现个泛型里的属性
+//Module 接收两个泛型，第一个泛型是本地这个state的类型，
+//第二个泛型是全局state的类型，也就是getters的第三个参数rootState的类型
+//写完泛型之后，state跟rootState后面打上点之后，会自动出现个泛型里的属性
 const templates: Module<TemplatesProps,GlobalDataProps>={
     //本地state
     state:{
