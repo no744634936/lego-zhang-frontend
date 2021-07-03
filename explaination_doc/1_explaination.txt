@@ -19,21 +19,24 @@ npm run serve
 4,将 ant-design-vue 放进app当中
   修改main.ts 文件
 
+
 5,下载vue-router 
   npm install vue-router@4 --save
 
-6,写views文件夹里的三个页面，跟component里面的一个组件,每行代码一行一行读
+6,将 vue-router  放进app当中
+  修改main.ts 文件
+
+6,写views文件夹里的三个页面，
+  写views 里面的三个页面时，先把页面布局一个一个在app.vue 里面写出来，
+
+  component里面的组件,每行代码一行一行读
   component的显示，
   路由跳转，
   路由的 meta 
   
-
-7,写路由 routes/index.ts
+7,写路由 routes/index.ts，将要显示的view写入 route
 
 8,写App.vue 文件
-
-9,将 vue-router  放进app当中
-  修改main.ts 文件
 
 
 10,下载vuex跟redux一样的功能
