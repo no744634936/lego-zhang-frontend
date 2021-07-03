@@ -1,5 +1,4 @@
 <template>
-<pre>{{needHeader}}</pre>
     <!-- 需要header跟footer的页面 -->
     <div class="homepage-container" v-if="needHeader">
         <a-layout>
@@ -37,7 +36,7 @@
 import { computed, defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex'
-import UserProfile from './components/userProfile.vue'
+import UserProfile from '../components/userProfile.vue'
 import {GlobalDataProps} from '../store/index'
 
 export default defineComponent({
@@ -64,12 +63,21 @@ export default defineComponent({
 </script>
 
 <style>
+.homepage-container{
+    margin: 0;
+    padding: 0;
+}
+.content-container{
+    margin-top:0.5rem;
+}
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: black;
 }
 .page-title {
   color: #fff;
 }
+
 </style>
