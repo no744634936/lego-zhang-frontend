@@ -15,8 +15,8 @@
                 </template>
                 <a-card-meta :title="item.title">
                 <template v-slot:description>
-                     <p>作者:{{item.author}}</p>
-                     <p>copiedCount:{{item.copiedCount}}</p>
+                     <p>作者:zhang</p>
+                     <p>copiedCount:4</p>
                 </template>
                 </a-card-meta>
             </a-card>
@@ -26,16 +26,13 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { TemplateProps } from '../store/template';
+import { defineComponent } from 'vue';
 export default defineComponent({
     name:"template_list",
     
     props:{
         list:{
-            // TemplateProps[]表示是一个拥有TemplateProps 元素的array
-            // PropType的作用是类型转换将 Array转换为TemplateProps[]
-            type:Array as PropType<TemplateProps[]>,
+            type:Array,
             required:true
         },
     },

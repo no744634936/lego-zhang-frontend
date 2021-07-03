@@ -3,11 +3,9 @@
 </template>
  
 <script lang='ts'>
-import { computed, defineComponent,reactive } from 'vue';
+import { defineComponent,reactive } from 'vue';
 import TemplateList from '../components/TemplateList.vue';
-// 使用vuex的store
-import { GlobalDataProps } from '../store/index';
-import { useStore } from 'vuex';
+
 
 export default defineComponent({
   name: 'App',
@@ -15,17 +13,14 @@ export default defineComponent({
       TemplateList,
   },
   setup(){
-      const store=useStore<GlobalDataProps>();
-      const testData = computed(() => store.state.templates.data)
-      
     //  这是一开始建页面布局用的testData
-    //   const testData=reactive([
-    //     {id:1,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    //     {id:2,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    //     {id:3,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    //     {id:4,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    //     {id:5,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
-    // ]);
+      const testData=reactive([
+        {id:1,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
+        {id:2,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
+        {id:3,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
+        {id:4,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
+        {id:5,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
+    ]);
 
     return{
         testData,

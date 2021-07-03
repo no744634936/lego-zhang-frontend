@@ -23,40 +23,12 @@ npm run serve
 5,下载vue-router 
   npm install vue-router@4 --save
 
-6,将 vue-router  放进app当中
+6,写 routes/index.ts 文件
+
+7,将 vue-router  放进app当中
   修改main.ts 文件
 
-6,写views文件夹里的三个页面，
-  写views 里面的三个页面时，先把页面布局一个一个在app.vue 里面写出来，
-
-  component里面的组件,每行代码一行一行读
-  component的显示，
-  路由跳转，
-  路由的 meta 
-  
-7,写路由 routes/index.ts，将要显示的view写入 route
-
-8,写App.vue 文件
-
-
-10,下载vuex跟redux一样的功能
-    npm install vuex@next --save
-
-11,建立store
-   store/index.ts文件
-
-12，将 store  放进app当中
-  修改main.ts 文件
-
-13，views/Home.vue 文件里导入store里的数据，
-14，views/TemplateDetail.vue 文件里导入store里getters定义的getTemplateById方法。
-    components/TemplateList.vue 里面也使用store里定义的类型。
-    components/userProfile  里面也使用store里mutations定义的login，logout方法，
-    任何组件中都可以使用useStore这个钩子函数来获取store中的值。
-    然后让值响应式地反映在组件中
-
-    什么是响应式对象
-    “响应式”，是指当数据改变后，Vue 会通知到使用该数据的代码。
-    例如，视图渲染中使用了数据，数据改变后，视图也会自动更新。
-    例如 components/userProfile.vue文件中使用了store/index.ts 中的 login，logout方法，
-    来改变 isLogin的值，值改变，视图也会自动更新。
+8,写views文件夹里的三个页面，
+  写views 里面的三个页面时，先把页面布局一个一个在Index.vue 里面写出来，
+  给页面里的按钮添加link使之可以跳转到别的路由
+  然后导入App.vue 看看布局是否正确
