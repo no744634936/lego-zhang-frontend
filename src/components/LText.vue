@@ -1,7 +1,7 @@
 <template>
     <!-- component 根据tag属性的值，自动转变标签类型 -->
     <component :is="tag" :style="style_props" class="l-text-component" @click="handleClick">
-    {{text}}
+    {{text}}  
     </component>
 </template>
 
@@ -20,9 +20,25 @@ export default defineComponent({
     setup(props){
 
         console.log("props",props);
+        // {
+        //     actionType: ""
+        //     backgroundColor: ""
+        //     borderColor: "#000"
+        //     borderRadius: "0"
+        //     borderStyle: "none"
+        //     borderWidth: "0"
+        //     boxShadow: "0 0 0 #000000"
+        //     color: "red"
+        //     fontFamily: ""
+        //     fontSize: "30px"
+        //     fontStyle: "normal"
+        //     ...
+        // }
     
         const {style_props,handleClick}=componentCommonFunc(props,text_component_css_props_name_arr)
         
+
+        // 从props 里挑选出来的与css有关的属性跟默认值
         console.log("style_props",style_props);
         
         return {

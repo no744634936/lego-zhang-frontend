@@ -12,13 +12,23 @@
         <div class="preview-list" id="canvas-area">
         <!-- 除了直接导入 <LText/> -->
         <!-- component tag 可以根据component的name 来调用LText -> :is="component.name"  -->
+        
+        <!-- v-bind="component.props"  的意思就是将 component.props 这个对象传给LText里的props 这是v-bind单独使用时的作用-->
+          <!-- 
+          <LText
+            v-for="component in components" 
+            :key="component.id" 
+            v-bind="component.props"
+          >
+              {{component.props.text}}
+          </LText>
+          -->
           <component 
             v-for="component in components" 
             :is="component.name" 
             :key="component.id" 
             v-bind="component.props"
           >
-              {{component.props.text}}
           </component>
         </div>
       </a-layout-content>

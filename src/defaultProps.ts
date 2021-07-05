@@ -97,7 +97,7 @@ export const component_default__props=generate_component_props(text_component_pr
 
 // console.log("component_default__props",component_default__props);
 
-// 为什么 generate_component_props方法的返回值赋值给component_default__props后会有"0": false, 跟 "1":?
+// 为什么 generate_component_props方法的返回值赋值给component_default__props后会有"0": false, 跟 "1":true 呢?
 // {
 //     "text": {
 //         "0": false,
@@ -242,6 +242,6 @@ export const component_default__props=generate_component_props(text_component_pr
 // }
 
 
-// 去掉 "actionType","url","text" 只留保留 text 组件的css 属性的数组
+// 去掉 "actionType","url","text" 只留保留 文本组件的css 属性的数组
 export const text_component_css_props_name_arr=without(Object.keys(text_component_props_with_defalut_value),"actionType","url","text")
 

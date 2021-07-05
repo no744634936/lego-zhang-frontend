@@ -16,10 +16,56 @@ npm i lodash-es --save
 npm install --save-dev @types/lodash-es  
 
 
+//建立 src/defaultProps.ts 文件
+  1，所有组件的共有属性
+        {
+            // actions
+            actionType: '',
+            url: '',
+            // size
+            height: '',
+            width: '318px',
+            ...
+        }
+
+  2，文本组件 的特有属性，加上 所有组件的共有属性，就是 文本组件的所有属性了
+        {
+            text: { type: String, default: '正文内容' },
+            fontSize: { type: String, default: '14px' },
+            ...
+        }
+
+  3，将文本组件的所有属性转化为 LText component的 props
+        {
+            actionType: '',
+            url: '',
+            height: '',
+            width: '318px',
+            ...
+
+            text: { type: String, default: '正文内容' },
+            fontSize: { type: String, default: '14px' },
+            ...
+        }
+
+  4，去掉 "actionType","url","text" 只留保留 文本组件的css 属性，并放进数组
+
+
 // 建立 components/LText.vue 文件
 
-//将components/LText.vue 导入 views/Editor.vue 文件里去
+   5，将 3 跟 4 步的结果导入 LText.vue
+
+   6，从props 里挑选出与css有关的属性跟默认值。
+      因为"actionType","url","text" 不可以放进html标签的style属性里
+      所以要单独取出来
+
+   7，点击事件单独封装成一个方法
+
+   8, 在template里面使用将css 属性，click方法，文本内容
 
 
-//建立 src/defaultProps.ts 文件
-//建立 src/hooks/ componentCommonFunc.ts 文件
+   //在 views/Editor.vue 文件里使用 components/LText.vue 
+
+     9，将store里面的数据给Editor.vue 在由Editor.vue 将数据传给components/LText.vue 
+
+     10，components/LText.vue  将数据显示出来
