@@ -1,6 +1,42 @@
 1，点击某个组件，该组件呈现选中状态  
-   components/EditWrapper.vue
-   views/Editor.vue
+   
+
+  // views/Editor.vue 
+  
+     1,在views/Editor.vue 文件里 使用 EditWrapper 组件包裹住LText组件
+
+     2,将每一个item的id  传给EditWrapper，(注意这时还没有传递active，EditWrapper.vue的props里面也没有active 属性)
+
+
+  // components/EditWrapper.vue 
+    (这种最小的展示型的组件就不要跟store扯上关系,
+    跟store有关的操作都交给父组件views/Editor.vue 来做，
+    所以就会有子组件emit事件返回些数据，让父组件根据这些数据来更新store)
+
+    3，设置从父组件传过来的id ，此时active默认为false
+      然后点击EditWrapper 触发 onItemClick 然后触发 onItemClick将id 回传给父组件views/Editor.vue
+      父组件用setActive 接收并触发 setElementActive 方法, 然后触发store里的setElementActive 方法
+
+  // store/editor.ts
+
+    4，setElementActive 方法通过获取到的id 更新 store里面的 currentElement
+      点击的哪一个EditWrapper ，currentElement的值就是那个EditWrapper的id
+
+  // views/Editor.vue 
+  
+    5， store 中的currentElement 被更新后，
+    就可以用getCurrentEditedElement 方法，根据currentElement 来取出被点击的 item的所有数据
+
+    6， 将拿到的item数据展示在右侧<pre> 标签里面
+
+    7, 为了美观，给选中的item添加一个边框，给 EditWrapper组件传递一个actve 属性
+       什么时候false ，什么时候true 这样计算 component.id===现在选中的item的id的时候为true
+
+       :active="component.id===(currentEditedElement&& currentEditedElement.id)"
+
+  // components/EditWrapper.vue 
+    8,接收到父组件传过来的active，决定是否显示边框
+
 
 2，将选中的组件的属性，以不同的类型的表单呈现在右侧
     store/editor.ts

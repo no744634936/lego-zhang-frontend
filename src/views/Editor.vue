@@ -18,24 +18,21 @@
             :key="component.id" 
             v-bind="component.props"
           >
-              {{component.props.text}}
           </LText>
 
           使用EditWrapper 让逻辑跟业务分离
-          像LText 这种类型的html 组件，里面就别写上for ，if 之类的逻辑了，
+          像LText 这种类型的html 展示型的组件，里面就别写上for ，if ，点击，拖拽事件之类的逻辑了，
           在外面包裹一层wrapper 在这个wrapper里面写逻辑就好
            -->
            <EditWrapper 
                 v-for="component in components" 
                 :key="component.id" 
-                @setActive="setElementActive"
-                
                 :id="component.id"
                 :active="component.id===(currentEditedElement&& currentEditedElement.id)"
+                
+                @setActive="setElementActive"
             >
-                <LText v-bind="component.props">
-                    {{component.props.text}}
-                </LText>
+                <LText v-bind="component.props"></LText>
            </EditWrapper>
         </div>
       </a-layout-content>
@@ -43,7 +40,7 @@
     <a-layout-sider width="300" style="background: purple" class="settings-panel">
       组件属性
       <pre>
-          <!--当 currentEditedElement存在的时候 打印currentEditedElement.props-->
+          <!--当 currentEditedElement存在的时候 打印currentEditedElement.props，因为有.props 所以必须判断currentEditedElement是否存在-->
           {{currentEditedElement&& currentEditedElement.props}}
       </pre>
     </a-layout-sider>  
@@ -72,9 +69,19 @@ export default defineComponent({
 
     setup(){
         const store=useStore<GlobalDataProps>();
-        const components=computed(()=>{return store.state.editor.components}) 
+
+
+        const components=computed(()=>{return store.state.editor.components})
+
         // console.log("components",components);
         const currentEditedElement= computed(()=>store.getters.getCurrentEditedElement)
+        
+        // 就算 const components=null ，不需要额外的判断
+        // template 里面的v-for="component in components" 也不会报错。 这是因为in 关键字的作用
+
+        // 但是 const currentEditedElement=null 的时候
+        // template 里面的{{currentEditedElement&& currentEditedElement.props}} 就要有额外的判断currentEditedElement&&
+        // 如果只是这样{{currentEditedElement.props}}，就会报错
 
         const addItem=(props: any)=>{
             // 用store来进行state的更新.
