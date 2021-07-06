@@ -37,13 +37,20 @@
         </div>
       </a-layout-content>
     </a-layout>
-    <a-layout-sider width="300" style="background: purple" class="settings-panel">
+
+    <a-layout-sider width="300" style="background: pink" class="settings-panel">
       组件属性
+      <PropsTable 
+            v-if="currentEditedElement&& currentEditedElement.props"
+            :props='currentEditedElement.props'
+      ></PropsTable>
+      
       <pre>
           <!--当 currentEditedElement存在的时候 打印currentEditedElement.props，因为有.props 所以必须判断currentEditedElement是否存在-->
           {{currentEditedElement&& currentEditedElement.props}}
       </pre>
-    </a-layout-sider>  
+    </a-layout-sider> 
+
   </a-layout>
 </div>
 </template>
@@ -58,6 +65,8 @@ import LText from "../components/LText.vue";
 import {defaultTextTemplatesList} from '../defaultTextTemplatesList'
 import EditWrapper from '../components/EditWrapper.vue';
 
+import PropsTable from '../components/PropsTable.vue'
+
 export default defineComponent({
     name:"editor",
 
@@ -65,6 +74,7 @@ export default defineComponent({
         LText,
         ComponentsList,
         EditWrapper,
+        PropsTable,
     },
 
     setup(){
