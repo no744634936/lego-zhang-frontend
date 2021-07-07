@@ -4,7 +4,7 @@
 import {text_component_props_with_defalut_value} from './defaultProps'
 
 interface ObjectWithComponent{
-    [key: string]: string;
+    [key: string]: any;
 }
 
 interface LooseObject {
@@ -13,5 +13,7 @@ interface LooseObject {
 }
 
 export const mapPropsToForms: LooseObject={
-    text: {component: 'a-input'}  // antd design vue 提供的input 组件
+    text: {component: 'a-input'},  // antd design vue 提供的input 组件
+    fontSize: {component: 'a-input-number'}, 
 }
+

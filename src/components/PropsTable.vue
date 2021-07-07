@@ -3,9 +3,6 @@
     <div v-for="(value, key) in resultProps"  :key="key"  class="prop-item">
         <component v-if="value" :is="value.component" :value="value.value"/>
     </div>
-    <pre>
-        {{props &&props.text}}
-    </pre>
   </div>
 </template>
 
@@ -23,21 +20,25 @@ export default defineComponent({
     }
   },
   setup(props, context) {
+      
 
 
     // 将{ text:"hello",  ...} 和{ text:{component:'a-input'}, ...} 组合变为 {text:{component:'a-input',value:'hello'},...}
     const resultProps = computed(()=>{
         return reduce(props.props, (result: any, value, key) => {
+          const item=mapPropsToForms[key]
 
-        const item = mapPropsToForms[key]
-            if (item) {
-                item.value=value
-                result.key=item
-            }
+          if(item){
+              item.value=value
+              result[key]=item
+          }
             return result
         }, {} )
     })
 
+
+    // console.log("mapPropsToForms",mapPropsToForms);
+    // console.log("resultProps",resultProps);
 
     // 为什么这个方法不行，resultProps 不会随着点击而改变，为什么上面那个方法可以呢？
     // interface LooseObject {
@@ -59,9 +60,6 @@ export default defineComponent({
 
     // const resultProps= computed(()=>{return finalProps})
 
-    
-
-    
     return {
       resultProps
     }
