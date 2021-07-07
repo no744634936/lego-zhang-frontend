@@ -1,7 +1,8 @@
 <template>
   <div class="props-table">
     <div v-for="(value, key) in resultProps"  :key="key"  class="prop-item">
-        <component v-if="value" :is="value.component" :value="value.value"/>
+        <span class="label" v-if="value.text">{{value.text}}</span>
+        <component v-if="value" :is="value.component" :value="value.value" v-bind="value.extraProps"/>
     </div>
   </div>
 </template>
@@ -21,8 +22,8 @@ export default defineComponent({
   },
   setup(props, context) {
       
-
-
+      console.log("mapPropsToForms",mapPropsToForms);
+      
     // 将{ text:"hello",  ...} 和{ text:{component:'a-input'}, ...} 组合变为 {text:{component:'a-input',value:'hello'},...}
     const resultProps = computed(()=>{
         return reduce(props.props, (result: any, value, key) => {
@@ -31,6 +32,11 @@ export default defineComponent({
           if(item){
               item.value=value
               result[key]=item
+
+              if(key==="lineHeight"){  //lineHeight的value必须为数字，不能是字符串
+                item.value=parseInt(value,10)
+                result[key]=item
+              }
           }
             return result
         }, {} )

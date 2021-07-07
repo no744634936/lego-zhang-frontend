@@ -11,3 +11,5 @@ src/ mapPropsToForms.ts
   2,将{ text:"hello",  ...} 和{ text:{component:'a-input'}, ...} 组合变为 {text:{component:'a-input',value:'hello'},...}
 
   3,将 {text:{component:'a-input',value:'hello'},...} 里的hello展示在editor的右侧
+
+// 多添加了两个表单组件在PropsTable.vue 文件里面，看一下就可以了

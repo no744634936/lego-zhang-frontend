@@ -13,7 +13,24 @@ interface LooseObject {
 }
 
 export const mapPropsToForms: LooseObject={
-    text: {component: 'a-input'},  // antd design vue 提供的input 组件
-    fontSize: {component: 'a-input-number'}, 
+    text: {
+        text: "文本",
+        component: 'a-textarea',
+        extraProps:{rows:3} 
+    },  // antd design vue 提供的input 组件
+     
+
+    fontSize: {
+        text:"字号",
+        component: 'a-input-number'
+    }, 
+
+    lineHeight: {
+        text:"行高",
+        component: 'a-slider',
+        //antd design vue的a-slider组件可配置的属性
+        // propsTable.vue文件里 使用 v-bind="value.extraProps" 将这些属性绑定到a-slider上面
+        extraProps:{min:0,max:3,step:0.1}  
+    }, 
 }
 
