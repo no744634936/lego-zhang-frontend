@@ -28,12 +28,12 @@ export default defineComponent({
     // 将{ text:"hello",  ...} 和{ text:{component:'a-input'}, ...} 组合变为 {text:{component:'a-input',value:'hello'},...}
     const resultProps = computed(()=>{
         return reduce(props.props, (result: any, value, key) => {
+          const item=mapPropsToForms[key]
 
-        const item = mapPropsToForms[key]
-            if (item) {
-                item.value=value
-                result.key=item
-            }
+          if(item){
+              item.value=value
+              result[key]=item
+          }
             return result
         }, {} )
     })
