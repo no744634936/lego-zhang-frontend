@@ -12,4 +12,4 @@ src/ mapPropsToForms.ts
 
   3,将 {text:{component:'a-input',value:'hello'},...} 里的hello展示在editor的右侧
 
-// 多添加了两个表单组件在PropsTable.vue 文件里面，看一下就可以了
+// 多添加了两个表单组件在mapPropsToForms.ts 文件里面，看一下就可以了
