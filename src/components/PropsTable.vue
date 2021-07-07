@@ -2,7 +2,21 @@
   <div class="props-table">
     <div v-for="(value, key) in resultProps"  :key="key"  class="prop-item">
         <span class="label" v-if="value.text">{{value.text}}</span>
-        <component v-if="value" :is="value.component" :value="value.value" v-bind="value.extraProps"/>
+        <component v-if="value" :is="value.component" :value="value.value" v-bind="value.extraProps">
+            <!-- template 是vue提供的空节点，仅仅是用来判断subComponent是否存在 -->
+            <!-- 下面这个结构是用来渲染下拉菜单，或者单选框 多选框的 -->
+            <!-- 例，上面那个component显示<a-radio-group> 下面这个component显示 <a-radio-button> -->
+            <template v-if="value.subComponent"> 
+                <component 
+                    :is="value.subComponent" 
+                    v-for="(option,k) in value.options" 
+                    :key="k"
+                    :value="option.value"
+                >
+                    {{option.text}}
+                </component>
+            </template>
+        </component>
     </div>
   </div>
 </template>
@@ -30,13 +44,14 @@ export default defineComponent({
           const item=mapPropsToForms[key]
 
           if(item){
-              item.value=value
+              item.value= item.initalTransform ? item.initalTransform(value) : value
               result[key]=item
 
-              if(key==="lineHeight"){  //lineHeight的value必须为数字，不能是字符串
-                item.value=parseInt(value,10)
-                result[key]=item
-              }
+            //   使用 initalTransform 方法比较爽一点，写if 来判断就不美观了
+            //   if(key==="lineHeight"){  //lineHeight的value必须为数字，不能是字符串
+            //     item.value=parseInt(value,10)
+            //     result[key]=item
+            //   }
           }
             return result
         }, {} )

@@ -22,7 +22,8 @@ export const mapPropsToForms: LooseObject={
 
     fontSize: {
         text:"字号",
-        component: 'a-input-number'
+        component: 'a-input-number',
+        initalTransform: (v: any) => parseInt(v,10)
     }, 
 
     lineHeight: {
@@ -30,7 +31,32 @@ export const mapPropsToForms: LooseObject={
         component: 'a-slider',
         //antd design vue的a-slider组件可配置的属性
         // propsTable.vue文件里 使用 v-bind="value.extraProps" 将这些属性绑定到a-slider上面
-        extraProps:{min:0,max:3,step:0.1}  
-    }, 
+        extraProps:{min:0,max:3,step:0.1},
+        initalTransform: (v: any) => parseInt(v,10)
+    },
+
+    // 由两个ant design vue的component组成
+    textAlign: {
+        text: '水平对齐',
+        component: 'a-radio-group',
+        subComponent: 'a-radio-button',
+        options: [
+          { value: 'left', text: '左' },
+          { value: 'center', text: '中' },
+          { value: 'right', text: '右' }
+        ],
+    },
+    fontFamily: {
+        text: '字体',
+        component: 'a-select',
+        subComponent: 'a-select-option',
+        options: [
+          { value: '', text: '无' },
+          { text: '宋体', value: '"SimSun","STSong"' },
+          { text: '黑体', value: '"SimHei","STHeiti"' },
+          { text: '楷体', value: '"KaiTi","STKaiti"' },
+          { text: '仿宋', value: '"FangSong","STFangsong"' },
+        ]
+      }
 }
 

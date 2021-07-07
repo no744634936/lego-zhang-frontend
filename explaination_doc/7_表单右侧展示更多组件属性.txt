@@ -1,0 +1,22 @@
+src/ mapPropsToForms.ts
+
+  1,用 antd design view里的哪一种组件来在右侧显示编辑器里选中的组件的属性
+
+    例如: text:{component:'a-input'}
+    的意思就是用 antd design view 的 a-input组件来显示 text
+
+
+// compnents/PropsTable.vue
+
+  2,将{ text:"hello",  ...} 和{ text:{component:'a-input'}, ...} 组合变为 {text:{component:'a-input',value:'hello'},...}
+
+  3,将 {text:{component:'a-input',value:'hello'},...} 里的hello展示在editor的右侧
+
+// 多添加了两个表单组件在mapPropsToForms.ts 文件里面，看一下就可以了
+
+
+
+// 多添加了textAlign fontFamily 在mapPropsToForms.ts 文件里面
+// PropsTable.vue也被修改了一下来适应subComponent
+
+// lineHeight的value必须为数字，不能是字符串,所以要写个方法转换一下
