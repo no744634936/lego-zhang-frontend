@@ -1,6 +1,7 @@
 import {Module} from "vuex"
 import {GlobalDataProps} from "./index"
 import { uuid } from 'uuidv4'
+import { update } from "lodash-es"
 
 // 这样命名interface比较好一点
 export interface ComponentDataProps{
@@ -47,6 +48,12 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
         // 使用这个方法，store 就知道了现在正在编辑的component是哪一个。
         setElementActive(state,currentId: string){
             state.currentElement = currentId
+        },
+        updateComponent(state,{key,value}){
+            const updateCompnent = state.components.find(component=>component.id===state.currentElement)
+            if(updateCompnent){
+                updateCompnent.props[key]=value
+            }
         }
     },
     getters:{

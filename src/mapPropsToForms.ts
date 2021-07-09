@@ -16,14 +16,15 @@ export const mapPropsToForms: LooseObject={
     text: {
         text: "文本",
         component: 'a-textarea',
-        extraProps:{rows:3} 
-    },  // antd design vue 提供的input 组件
-     
+        extraProps:{rows:3},
+        transformEventValue:(e: any)=>{return e.target.value}
+    },  // antd design vue 提供的a-textarea 组件
 
     fontSize: {
         text:"字号",
         component: 'a-input-number',
-        initalTransform: (v: any) => parseInt(v,10)
+        initalTransform: (v: any) =>{ return  parseInt(v,10)}, //注意有大括号的时候，必须些return
+        transformEventValue:(e: number)=>{return e ? `${e}px` : ''}
     }, 
 
     lineHeight: {
@@ -31,8 +32,9 @@ export const mapPropsToForms: LooseObject={
         component: 'a-slider',
         //antd design vue的a-slider组件可配置的属性
         // propsTable.vue文件里 使用 v-bind="value.extraProps" 将这些属性绑定到a-slider上面
-        extraProps:{min:0,max:3,step:0.1},
-        initalTransform: (v: any) => parseInt(v,10)
+        extraProps:{min:0,max:10,step:0.1},
+        initalTransform: (v: any) => parseInt(v,10),
+        transformEventValue:(e: number)=>{return e.toString()}
     },
 
     // 由两个ant design vue的component组成
@@ -45,6 +47,7 @@ export const mapPropsToForms: LooseObject={
           { value: 'center', text: '中' },
           { value: 'right', text: '右' }
         ],
+        transformEventValue:(e: any)=>{return e.target.value}
     },
     fontFamily: {
         text: '字体',
@@ -56,7 +59,8 @@ export const mapPropsToForms: LooseObject={
           { text: '黑体', value: '"SimHei","STHeiti"' },
           { text: '楷体', value: '"KaiTi","STKaiti"' },
           { text: '仿宋', value: '"FangSong","STFangsong"' },
-        ]
+        ],
+        // fontFamily 不需要 transformEventValue
       }
 }
 

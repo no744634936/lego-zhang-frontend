@@ -38,11 +38,12 @@
       </a-layout-content>
     </a-layout>
 
-    <a-layout-sider width="300" style="background: pink" class="settings-panel">
+    <a-layout-sider width="300" style="background: #fff" class="settings-panel">
       组件属性
       <PropsTable 
             v-if="currentEditedElement&& currentEditedElement.props"
             :props='currentEditedElement.props'
+            @changeValue="handleChangeValue"
       ></PropsTable>
       
       <pre>
@@ -103,6 +104,11 @@ export default defineComponent({
             store.commit('setElementActive',id)
         }
         
+        const handleChangeValue=(data: any)=>{
+            // console.log("event",data); 
+            store.commit('updateComponent',data)
+            
+        }
         return {
             components,
             defaultTextTemplatesList,
@@ -110,6 +116,7 @@ export default defineComponent({
             addItem,
             setElementActive,
             currentEditedElement,
+            handleChangeValue,
         }
     }
 
