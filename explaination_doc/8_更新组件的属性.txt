@@ -52,7 +52,5 @@ ant design vue 里面
 //   PropsTable.vue 文件里使用 v-on="value.eventActiion" 将数据发送给Editor.vue
 
 
-// Editor.vue 用 handleChangeValue 方法接收到传过来的数据
+// Editor.vue 用 handleChangeValue 方法接收到传过来的数据然后更新store里面的数据
 
-
-行高的移动好像有点问题
