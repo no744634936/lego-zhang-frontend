@@ -1,7 +1,6 @@
 // typescript 里面的每一个变量都用interface定义他显示的内容是什么
 // 现在对泛型还不太熟悉，就先做个LooseObject
 
-import {text_component_props_with_defalut_value} from './defaultProps'
 
 interface ObjectWithComponent{
     [key: string]: any;
@@ -9,8 +8,24 @@ interface ObjectWithComponent{
 
 interface LooseObject {
     [key: string]: ObjectWithComponent;
-    
 }
+
+const fongFamilyOptionArr = [
+    { text: '宋体', value: '"SimSun","STSong"' },
+    { text: '黑体', value: '"SimHei","STHeiti"' },
+    { text: '楷体', value: '"KaiTi","STKaiti"' },
+    { text: '仿宋', value: '"FangSong","STFangsong"' },
+]
+
+const fongFamilyOptionHtmlArr = fongFamilyOptionArr.map(e=>{
+    // <span style={{fontFamily:e.value}}>{e.text}</span> 这种 html元素是不能直接取出来放进template里的
+    // 要用 RenderVnode 组件处理一下，这个组件是固定写法，
+    return {text: <span style={{fontFamily: e.value}}>{e.text}</span>, value: e.value,}
+
+})
+
+
+
 
 export const mapPropsToForms: LooseObject={
     text: {
@@ -55,12 +70,12 @@ export const mapPropsToForms: LooseObject={
         subComponent: 'a-select-option',
         options: [
           { value: '', text: '无' },
-          { text: '宋体', value: '"SimSun","STSong"' },
-          { text: '黑体', value: '"SimHei","STHeiti"' },
-          { text: '楷体', value: '"KaiTi","STKaiti"' },
-          { text: '仿宋', value: '"FangSong","STFangsong"' },
+          ...fongFamilyOptionHtmlArr,
         ],
         // fontFamily 不需要 transformEventValue
       }
 }
+
+console.log("mapPropsToForms",mapPropsToForms);
+
 

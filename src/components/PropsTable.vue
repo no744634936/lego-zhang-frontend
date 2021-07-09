@@ -20,7 +20,7 @@
                     :key="k"
                     :value="option.value"
                 >
-                    {{option.text}}
+                    <RenderVnode :vNode="option.text"></RenderVnode>
                 </component>
             </template>
         </component>
@@ -32,6 +32,7 @@
 import { computed, defineComponent,} from 'vue'
 import { reduce } from 'lodash'
 import {  mapPropsToForms } from '../mapPropsToForms'
+import RenderVnode from './RenderVnode'
 
 export default defineComponent({
   name: 'props-table',
@@ -40,6 +41,9 @@ export default defineComponent({
       type: Object,
       required: true
     }
+  },
+  components:{
+      RenderVnode,
   },
   emits:['changeValue'],
   setup(props, context) {
@@ -124,5 +128,7 @@ export default defineComponent({
 .prop-component {
   width: 70%;
 }
-
+.ant-select-show-arrow{
+    width:6rem
+}
 </style>

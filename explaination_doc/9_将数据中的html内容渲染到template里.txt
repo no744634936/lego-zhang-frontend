@@ -1,0 +1,44 @@
+将数据中的html元素渲染到template里面去
+
+
+1，将 mapPropsToForms.ts 文件改为mapPropsToForms.tsx文件(也就是jsx文件)
+   就可以将html内容存入数据里面了
+
+
+const fongFamilyOptionArr = [
+    { text: '宋体', value: '"SimSun","STSong"' },
+    { text: '黑体', value: '"SimHei","STHeiti"' },
+    { text: '楷体', value: '"KaiTi","STKaiti"' },
+    { text: '仿宋', value: '"FangSong","STFangsong"' },
+]
+
+const fongFamilyOptionHtmlArr = fongFamilyOptionArr.map(e=>{
+    // <span style={{fontFamily:e.value}}>{e.text}</span> 这种 html元素是不能直接取出来放进template里的
+    // 要用 RenderVnode 组件处理一下，这个组件是固定写法，
+    // <span style={{fontFamily: e.value}}>{e.text}</span> 会被转化成一个object
+    return {text: <span style={{fontFamily: e.value}}>{e.text}</span>, value: e.value,}
+
+})
+
+
+fontFamily: {
+    text: '字体',
+    component: 'a-select',
+    subComponent: 'a-select-option',
+    options: [
+        { value: '', text: '无' },
+        ...fongFamilyOptionHtmlArr,
+    ],
+}
+
+
+
+2，建立 RenderVnode 组件，可以用来渲染包含span标签的object  
+   也可以渲染string 
+
+
+3，PropsTable.vue 文件就可以引用RenderVnode.vue 组件来渲染出fontFamily，跟 textAlign 的 options 
+
+
+
+    然后在下拉菜单的选项中嵌入html标签span了
