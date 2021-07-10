@@ -2,3 +2,36 @@
 
 
 2, 添加插件 vue add unit-jest
+
+3, npm run test:unit -- --watch
+
+
+4,
+
+渲染组件
+    mount(一股脑全都渲染) 
+    shallowMount(只渲染组件本身，外来的子组件都不渲染, 更快，更适合单元测试)
+    传递属性
+
+
+元素是否成功的显示
+    查找元素的不同写法
+    get
+    find, findAll
+    findComponent 和 getComponent
+触发事件
+trigger 方法
+测试界面是否更新
+特别注意DOM更新是个异步的过程
+使用 async await
+更新表单
+setValue 方法
+验证事件是否发送
+wrapper.emitted()
+
+
+find 和 get 的区别
+找不到的时候，find 返回 null，case 不会出错，get throw 错误，case 报错
+通用规则：总是使用 get，除了你想判断一些元素不存在的时候，这种情况下使用 find 文档链接
+getComponent 的意义
+不必测试子组件里面的内容，只要判断是否渲染了子组件，是否传递了正确的属性就可以了，这就是单元测试的意义，独立，互不影响的模块。

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "ant-design-vue": "^2.1.6",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "lodash-es": "^4.17.21",
     "uuidv4": "^6.2.8",
