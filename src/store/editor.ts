@@ -49,6 +49,11 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
         setElementActive(state,currentId: string){
             state.currentElement = currentId
         },
+        deleteItemFromStore(state,deleteId: string){
+            if(deleteId){
+                state.components=state.components.filter(component=>component.id !== deleteId)
+            }
+        },
         updateComponent(state,{key,value}){
             const updateCompnent = state.components.find(component=>component.id===state.currentElement)
             if(updateCompnent){

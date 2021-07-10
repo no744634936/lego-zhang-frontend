@@ -73,6 +73,16 @@ export const mapPropsToForms: LooseObject={
           ...fongFamilyOptionHtmlArr,
         ],
         // fontFamily 不需要 transformEventValue
+    },
+    width: {
+        text: '宽度',
+        component: 'a-input-number',
+        initalTransform: (v: any) =>{ return  parseInt(v,10)}, //注意有大括号的时候，必须些return
+        transformEventValue:(e: number)=>{return e ? `${e}px` : ''}
+      },
+      color: {
+        component: 'color-picker',
+        text: '字体颜色'
       }
 }
 

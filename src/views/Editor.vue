@@ -31,6 +31,7 @@
                 :active="component.id===(currentEditedElement&& currentEditedElement.id)"
                 
                 @setActive="setElementActive"
+                @deleteItem="deleteItemFromStore"
             >
                 <LText v-bind="component.props"></LText>
            </EditWrapper>
@@ -103,7 +104,11 @@ export default defineComponent({
         const setElementActive=(id: string)=>{
             store.commit('setElementActive',id)
         }
-        
+        const deleteItemFromStore=(id: string)=>{
+            console.log('deleteItemFromStore',id);
+            
+            store.commit('deleteItemFromStore',id)
+        }
         const handleChangeValue=(data: any)=>{
             // console.log("event",data); 
             store.commit('updateComponent',data)
@@ -117,6 +122,7 @@ export default defineComponent({
             setElementActive,
             currentEditedElement,
             handleChangeValue,
+            deleteItemFromStore,
         }
     }
 

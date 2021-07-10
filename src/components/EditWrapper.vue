@@ -1,7 +1,12 @@
 <template>
+<div class="edit-row">
   <div class="edit-wrapper" @click="onItemClick(id)" :class="{ active: active }">
     <slot></slot>
   </div>
+  <span  @click="deleteItem(id)">x</span>
+</div>
+
+  
 </template>
 
 <script lang="ts">
@@ -18,19 +23,28 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['setActive'],
+  emits: ['setActive','deleteItem'],
   setup(props, context) {
     const onItemClick = (id: string) => {
       context.emit('setActive', id)
     }
+
+    const deleteItem =(id: string)=>{
+        context.emit('deleteItem',id)
+    }
     return {
-      onItemClick
+      onItemClick,
+      deleteItem,
     }
   }
 })
 </script>
 
 <style>
+.edit-row{
+  display: flex;
+  flex-direction: row;
+}
 .edit-wrapper {
   padding: 0px;
   cursor: pointer;
