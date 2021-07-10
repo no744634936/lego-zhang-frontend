@@ -1,0 +1,4 @@
+1, 查看 11_front_end_test 文件夹里的文件
+
+
+2, 添加插件 vue add unit-jest

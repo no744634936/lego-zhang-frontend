@@ -1,0 +1,11 @@
+npm init
+
+npm install axios --save-dev 
+
+npm install --save-dev jest
+
+npx jest --version
+
+然后
+npx jest 
+会自动运行，以.test.js 结尾的文件
