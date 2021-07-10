@@ -1,3 +1,4 @@
 1,删除编辑器中的item  查看 deleteItemFromStore方法
 
-2，添加了几个右侧表单属性
+2，添加了几个右侧表单属性在mapPropsToForms.txs文件里
+
