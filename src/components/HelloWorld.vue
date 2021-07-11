@@ -1,15 +1,19 @@
 <template>
   <h1>{{msg}}</h1>
   <button @click="setCount">{{count}}</button>
+
+  <!-- input 里输入内容，点击添加，添加元素到todos里面去，然后循环显示在页面上 -->
   <input type="text" v-model="todo"/>
   <button class="addTodo" @click="addTodo">add</button>
+  <ul>
+    <li v-for="(todo, index) in todos" :key="index">{{todo}}</li>
+  </ul>
+
   <button class="loadUser" @click="loadUser">load</button>
   <p v-if="user.loading" class="loading">Loading</p>
   <div v-else class="userName">{{user.data && user.data.username}}</div>
   <p v-if="user.error" class="error">error!</p>
-  <ul>
-    <li v-for="(todo, index) in todos" :key="index">{{todo}}</li>
-  </ul>
+
   <hello msg="1234"></hello>
 </template>
 
@@ -30,7 +34,7 @@ export default defineComponent({
     const todo = ref('')
     const todos = ref<string[]>([])
     const user = reactive({
-      data: null as any,
+      data: null,
       loading: false,
       error: false
     })

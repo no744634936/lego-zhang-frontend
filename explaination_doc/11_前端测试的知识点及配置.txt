@@ -2,36 +2,78 @@
 
 
 2, 添加插件 vue add unit-jest
+   它自动添加 test/unit/example.spec.ts文件
+   自动引入helloworld 组件
 
-3, npm run test:unit -- --watch
+3, npm run test:unit -- --watchAll
 
 
-4,
+4, 查看test/unit/example.spec.ts  跟   test/unit/example2.spec.ts 两个文件
 
-渲染组件
+
+对html渲染及props传递的测试
     mount(一股脑全都渲染) 
     shallowMount(只渲染组件本身，外来的子组件都不渲染, 更快，更适合单元测试)
     传递属性
 
 
-元素是否成功的显示
-    查找元素的不同写法
-    get
-    find, findAll
-    findComponent 和 getComponent
-触发事件
-trigger 方法
-测试界面是否更新
-特别注意DOM更新是个异步的过程
-使用 async await
-更新表单
-setValue 方法
-验证事件是否发送
-wrapper.emitted()
+测试元素是否成功的显示(查找元素)
+    
+    get 与 find 方法：
+        find 和 get 的区别:
+        找不到的时候，find 返回 null，case 不会出错终止，get 的话会抛出错误，case报错终止
+        通用规则：总是使用 get，除了你想判断一些元素不存在，这种情况下使用 find  
+
+    getAll 与 findAll:　
+        返回的是数组而已
+
+    findComponent 与 getComponent 方法:
+        getComponent 的意义
+        不必测试子组件里面的内容，
+        只要判断是否渲染了子组件，是否传递了正确的属性就可以了，
+        这就是单元测试的意义，独立，互不影响的模块。
 
 
-find 和 get 的区别
-找不到的时候，find 返回 null，case 不会出错，get throw 错误，case 报错
-通用规则：总是使用 get，除了你想判断一些元素不存在的时候，这种情况下使用 find 文档链接
-getComponent 的意义
-不必测试子组件里面的内容，只要判断是否渲染了子组件，是否传递了正确的属性就可以了，这就是单元测试的意义，独立，互不影响的模块。
+测试触发事件(要用async)
+        trigger 方法
+
+测试更新表单(表单的更新就是输入内容，添加到一个响应式的对象上，然后根据响应式对象触发一些变化)
+        setValue 方法
+        验证事件是否发送:wrapper.emitted() 方法，以数组的形式记录发送出来的值
+
+
+测试异步请求
+        import axios from 'axios'
+        jest.mock('axios')  // 拦截axios
+        const mockAxios = axios as jest.Mocked<typeof axios> // 这样写之后就可以在mockAxios后面点出各种方法了
+
+        npm i flush-promises --save-dev
+        
+        测试界面是否更新
+        特别注意DOM更新是个异步的过程
+        使用 async await => await flushPromises()
+
+
+
+
+
+一次性完成所有测试准备
+    beforeAll
+    afterAll
+
+
+每个测试的测试准备
+    beforeEach
+    afterEach
+
+
+一些建议
+* 如果一堆测试用例里面有一个测试失败，
+* 它使用 it.only 进行隔离再运行一次，如果单独没问题，一起运行时有了问题
+  那就要看看这些用例的状态之间是否互相影响
+* 然后使用 beforeEach 或者 afterEach 清空一些共享状态 
+
+
+小tip
+使用 only 只运行一个用例
+使用 skip 跳过一个用例
