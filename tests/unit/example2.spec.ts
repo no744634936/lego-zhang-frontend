@@ -109,3 +109,31 @@ describe('HelloWorld.vue', () => {
 
 
 })
+
+
+// 由  import axios from 'axios' 跟 axios.get('https://....') 这两句话可以得知
+// axios 这个第三方库返回的是一个对象，这个对象上有一个get方法,
+// 这个get方法返回的是一个要么是resolved的promise
+// 要么返回的是rejected 的的promise
+
+
+// 第一种模拟法:
+
+// jest.mock('axios')   
+// mockAxios.get.mockResolvedValueOnce({ data: { username: 'viking'}}) // 让axios.get 返回一个resolved 
+// mockAxios.get.mockRejectedValueOnce('error')  // 让axios.get 放回一个rejected
+
+// 第二种模拟法
+// 也可以将 jest.mock('axios')  
+// 写成下面这种形式
+
+// jest.mock('axios',()=>{
+//     return{
+//         get:jest.fn(()=>{
+//             return Promise.resolve({data:{username: 'viking'}})
+//         })
+//     }
+// })  
+
+// 但是如果这样些，那么被测试的组件里的 axios.get 方法都只能返回{data:{username: 'viking'}} 这个promise数据
+// 具体例子查看 example3.spec.ts 文件

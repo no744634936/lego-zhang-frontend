@@ -1,27 +1,44 @@
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount ,VueWrapper } from '@vue/test-utils'
 import HelloWorld from '@/components/HelloWorld.vue'
 import Hello from '@/components/Hello.vue'
 
 // 有关axios的测试
 import flushPromises from 'flush-promises'
 import axios from 'axios'
-jest.mock('axios')  // 拦截axios，axios 被jest接管了，axios里面的所有方法的返回值，我都可以自由指定了
-const mockAxios = axios as jest.Mocked<typeof axios> // 这样写之后就可以在mockAxios后面点出各种方法了
 
 
+// 如果这样拦截axios ,no.1,  no.2, no.3, no.4 这三个地方的将不能使用使用
+jest.mock('axios',()=>{
+    return{
+        get:jest.fn(()=>{
+            return Promise.resolve({data:{username: 'viking'}})
+        })
+    }
+})  
+
+// no.1 这个写法也不行了
+// const mocAxios = axios as jest.Mocked<typeof axios> 
+
+
+const msg = 'new message'
+
+let wrapper: VueWrapper<any>  // // let wrapper: any 这样写也可以
 describe('HelloWorld.vue', () => {
+
+  beforeAll(() => {
+    // 所有测试用例都用同一个wrapper
+    wrapper = shallowMount(HelloWorld, {
+      props: { msg }
+    })
+  })
+
+  afterEach(() => {
+    //  no.2 这个方法也用不了了
+    // axios.get.mockReset()
+  })
 
   // 对html渲染及props传递的测试
   it('renders props.msg when passed', () => {
-    const msg = 'new message'
-
-    // 渲染组件，使用shallowMount将逐渐渲染成html文件格式
-    // 将msg 传递给HelloWorld组件的props，
-    // HelloWorld组件里又将msg 传给 Hello.vue 组件
-    // shallowMount 方法只将HelloWorld渲染成html
-    // 如果使用mount 方法，那么HelloWorld.vue 跟 Hello.vue 子组件都会被渲染成html
-    // 使用shallowMount 更快，更适合单元测试
-    const wrapper = shallowMount(HelloWorld, {props: { msg }})
 
     // 用这个方法可以查看渲染结果
     console.log(wrapper.html()); 
@@ -46,16 +63,12 @@ describe('HelloWorld.vue', () => {
   // 测试触发事件
   //所有引起dom更新的操作都要在前面使用await
   it("should update the count when click the button",async()=>{
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {props: { msg }})
     await wrapper.get('button').trigger('click')
     expect(wrapper.get('button').text()).toBe('2') // 注意是字符串
   })
 
 
   it('should add todo when fill the input and click the add button', async () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {props: { msg }})
 
     const todoContent = 'buy milk'
 
@@ -83,12 +96,13 @@ describe('HelloWorld.vue', () => {
   // 异步请求的测试
   // 可以加个only关键词，it.only('should load user message when click the load button', async () => {.......}) 这种带only的写法是告诉jest 只跑这一个测试，其他测试都不跑
   it('should load user message when click the load button', async () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {props: { msg }})
-    mockAxios.get.mockResolvedValueOnce({ data: { username: 'viking'}}) // 让axios.get 返回一个resolved 
+    
+    // no.3 不能 axios.get.mockResolvedValueOnce 了
+    // axios.get.mockResolvedValueOnce({ data: { username: 'viking'}}) // 让axios.get 返回一个resolved 
+   
     // 第一步点击事件
     await wrapper.get('.loadUser').trigger('click')
-    expect(mockAxios.get).toHaveBeenCalled()
+    expect(axios.get).toHaveBeenCalled()
     expect(wrapper.find('.loading').exists()).toBeTruthy()
     // 获取数据是一个promise ，等待promise获取到数据并结束是要花时间的
     await flushPromises()   // 等待promise resolved，并等待页面更新完毕，
@@ -97,22 +111,17 @@ describe('HelloWorld.vue', () => {
     expect(wrapper.get('.userName').text()).toBe('viking')
   })
 
-  it('should load error when return promise reject', async () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {props: { msg }})
 
-    mockAxios.get.mockRejectedValueOnce('error')  // 让axios.get 放回一个rejected
-    await wrapper.get('.loadUser').trigger('click')
-    expect(mockAxios.get).toHaveBeenCalledTimes(2)  // 写2 是因为get方法在第90行被呼叫过一次
-    await flushPromises()
-    expect(wrapper.find('.loading').exists()).toBe(false)
-    expect(wrapper.find('.error').exists()).toBe(true)
-  })
+//   no.4 不能再这样写  axios.get.mockRejectedValueOnce('error') 
+//   it('should load error when return promise reject', async () => {
+
+//     axios.get.mockRejectedValueOnce('error')  // 让axios.get 放回一个rejected
+//     await wrapper.get('.loadUser').trigger('click')
+//     expect(axios.get).toHaveBeenCalledTimes(1)  // 这里变为1了，因为afterEach里面重置了
+//     await flushPromises()
+//     expect(wrapper.find('.loading').exists()).toBe(false)
+//     expect(wrapper.find('.error').exists()).toBe(true)
+//   })
+
+
 })
-
-// 不足的地方
-// 1，每个测试用例都用重复的代码  使用beforeAll 来解决
-
-// 2, GET方法被掉用的次数为2 (toHaveBeenCalledTimes(2))，每个测试用例间有影响，
-//    使用beforeEach来解决
-// 具体查看 example2.spec.ts 文件
