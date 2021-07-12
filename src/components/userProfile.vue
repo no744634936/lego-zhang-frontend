@@ -9,7 +9,8 @@
   <div v-else>
     <a-dropdown-button  class="user-profile-component">
       <router-link to="/setting">{{user.userName}}</router-link>
-      <template v-slot:overlay>
+      <!-- <template #overlay> 是ant design vue的写法也可以写成  <template v-slot:overlay> -->
+      <template #overlay>
         <a-menu class="user-profile-dropdown">
           <a-menu-item key="0" @click="logout">登出</a-menu-item>
         </a-menu>

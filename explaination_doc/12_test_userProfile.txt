@@ -1,0 +1,9 @@
+1,userProfile.vue 分析其行为，在登录及非登录的状态下进行点击触发不同的方法，
+  先测试界面，后测试行为
+
+
+
+2, 测试登录，登出，难点，有很多全局的组件，如 a-button，a-dropdown-button，组件中并没有这直接导入
+   在mount 方法里添加一个global属性，用来转化一些全局方面的内容
+   查看 userProfile.spec.ts 文件
+

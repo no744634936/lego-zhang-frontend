@@ -21,7 +21,7 @@
 import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '../store/index'
-import UserProfile from '../components/UserProfile.vue'
+import UserProfile from '../components/userProfile.vue'
 export default defineComponent({
   name: 'Index',
   components: {
