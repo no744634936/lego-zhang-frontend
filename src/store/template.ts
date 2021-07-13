@@ -17,8 +17,8 @@ export interface TemplatesProps{
     data: TemplateProps[];
 }
 
-const testData: TemplateProps[]=[
-    {id:1,coverImg:"https://cdn.pixabay.com/photo/2021/05/24/12/18/lighthouse-6278951_1280.jpg",title:"前端架构项目",author:"zhang haifeng",copiedCount:0},
+export const testData: TemplateProps[]=[
+    {id:1,coverImg:"https://cdn.pixabay.com/photo/2021/05/24/12/18/lighthouse-6278951_1280.jpg",title:"前端架构项目1",author:"zhang haifeng",copiedCount:0},
     {id:2,coverImg:"https://cdn.pixabay.com/photo/2012/08/06/00/53/bridge-53769_1280.jpg",title:"前端架构项目",author:"zhang haifeng",copiedCount:0},
     {id:3,coverImg:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",title:"前端架构项目",author:"zhang haifeng",copiedCount:0},
     {id:4,coverImg:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",title:"前端架构项目",author:"zhang haifeng",copiedCount:0},

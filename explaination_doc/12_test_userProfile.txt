@@ -7,3 +7,28 @@
    在mount 方法里添加一个global属性，用来转化一些全局方面的内容
    查看 userProfile.spec.ts 文件
 
+
+3,  查看这两个文件
+userProfile.spec.ts
+userProfile2.spec.ts
+
+
+
+4，单独测试vuex 的store
+   查看store.spec.ts 文件
+
+    测试过程
+        1,检查初始 state 是否正常
+        2,触发 mutations 或者 actions，对于每个 mutations 可以写一个 case
+        3,检查修改后的 state 是否正常
+        4,测试 getters
+
+
+
+在jest.config.js 里面添加
+
+  transformIgnorePatterns: [
+    "<rootDir>/node_modules/(?!lodash-es)"
+  ],
+
+这样jest 就可以解析lodash-es了，

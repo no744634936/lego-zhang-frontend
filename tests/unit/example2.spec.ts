@@ -136,3 +136,4 @@ describe('HelloWorld.vue', () => {
 // })  
 
 // 但是如果这样些，那么被测试的组件里的 axios.get 方法都只能返回{data:{username: 'viking'}} 这个promise数据
+// 具体例子看 example3.spec.ts 文件
