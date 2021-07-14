@@ -33,7 +33,7 @@ import { computed, defineComponent,} from 'vue'
 import { reduce } from 'lodash'
 import {  mapPropsToForms } from '../mapPropsToForms'
 import RenderVnode from './RenderVnode'
-
+import ColorPicker from './ColorPicker.vue'
 export default defineComponent({
   name: 'props-table',
   props: {
@@ -44,6 +44,7 @@ export default defineComponent({
   },
   components:{
       RenderVnode,
+      ColorPicker,
   },
   emits:['changeValue'],
   setup(props, context) {

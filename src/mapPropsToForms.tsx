@@ -80,10 +80,10 @@ export const mapPropsToForms: LooseObject={
         initalTransform: (v: any) =>{ return  parseInt(v,10)}, //注意有大括号的时候，必须些return
         transformEventValue:(e: number)=>{return e ? `${e}px` : ''}
       },
-      color: {
-        component: 'color-picker',
+    color: {
+        component: 'ColorPicker',
         text: '字体颜色'
-      }
+    }
 }
 
 console.log("mapPropsToForms",mapPropsToForms);
