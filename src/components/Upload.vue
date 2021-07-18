@@ -1,10 +1,8 @@
 <template>
     <div class='file-upload'>
         <!-- input元素是被隐藏的，点击button然后触发input的click事件，就可以传文件了 -->
-        <button @click="triggerUpload">
-            <span v-if="fileStatus==='loading'">正在上传</span>
-            <span v-else-if="fileStatus==='success'">上传成功</span>
-            <span v-else-if="fileStatus==='error'">上传失败</span>
+        <button @click="triggerUpload" :disabled="isUploading">
+            <span v-if="isUploading">正在上传</span>
             <span v-else>点击上传</span>
         </button>
         <input ref="fileInput" type="file" :style="{display: 'none'}" @change="handleFileUpload">
@@ -12,9 +10,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, reactive, computed } from 'vue'
 import axios from 'axios'
+import { uuid  } from 'uuidv4'
 type UploadSatuts = 'ready' | 'loading' | 'success' | 'error'
+
+export interface UploadFile{
+    uid: string;
+    size: number;
+    name: string;
+    status: UploadSatuts;
+    raw: File;
+}
+
 export default defineComponent({
   name: 'Hello',
   props: {
@@ -30,6 +38,13 @@ export default defineComponent({
 
     const fileStatus = ref<UploadSatuts>('ready')
 
+    const uploadedFiles= ref<UploadFile[]>([])
+
+    // 只要有数组里有一项是loading，那么整个button的状态就是loading，自然使用computed
+    const isUploading= computed(()=>{
+        return uploadedFiles.value.some(file=>file.status==='loading')
+    })
+
     //点击 点击上传 按钮触发triggerUpload方法，然后触发input元素里的click事件
     const triggerUpload=()=>{
         if(fileInput.value){
@@ -39,7 +54,6 @@ export default defineComponent({
 
     //
     const handleFileUpload=async(e: Event)=>{
-        fileStatus.value='loading'
 
         const target= e.target as HTMLInputElement
         const files= target.files
@@ -49,18 +63,30 @@ export default defineComponent({
             const uploadFile=files[0]
             const formData= new FormData()
             formData.append(uploadFile.name,uploadFile)
-            result = await axios.post(props.api_url,formData,{
+
+            const fileObj= reactive<UploadFile>({
+                uid:uuid(),
+                size:uploadFile.size,
+                name: uploadFile.name,
+                status: 'loading',
+                raw: uploadFile,  // 整个文件内容
+            })
+
+            uploadedFiles.value.push(fileObj)
+
+            fileStatus.value='loading'
+            result = await axios.post('https://sm.ms/api/v2/upload',formData,{
                 headers:{
                     'content-Type':'multipart/form-data',
+                    'Authorization': 'PQomjPYiPPVbIQJEdhq2HptD7K2DrWGE'
                 }
             })
             if(result.errno == 0){
-                console.log('.....');
-                fileStatus.value='success'
-                
+                console.log('上传图片成功');
+                fileObj.status='success'
             }else{
                 console.log('上传图片出错');
-                fileStatus.value='error'
+                fileObj.status='error'
             }
         }
         console.log('testtest',result);
@@ -70,6 +96,9 @@ export default defineComponent({
         triggerUpload,
         fileStatus,
         handleFileUpload,
+        isUploading,
+        uploadedFiles
+        
     }
   }
 })
