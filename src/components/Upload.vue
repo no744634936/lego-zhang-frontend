@@ -75,12 +75,12 @@ export default defineComponent({
             uploadedFiles.value.push(fileObj)
 
             fileStatus.value='loading'
-            result = await axios.post('https://sm.ms/api/v2/upload',formData,{
+            result = await axios.post( props.api_url,formData,{
                 headers:{
                     'content-Type':'multipart/form-data',
-                    'Authorization': 'PQomjPYiPPVbIQJEdhq2HptD7K2DrWGE'
-                }
+                    'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEzNjM4MTM3MDA0IiwicGhvbmVOdW1iZXIiOiIxMzYzODEzNzAwNCIsIm5pY2tOYW1lIjoia2tra2siLCJpYXQiOjE2MjY2MTQwNjUsImV4cCI6MTYyNjcwMDQ2NX0.PXHEL4UjEQzlVEDlXmhWnYLo3EJ05UBHM6CmjgxT50s',                }
             })
+
             if(result.errno == 0){
                 console.log('上传图片成功');
                 fileObj.status='success'

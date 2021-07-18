@@ -1,5 +1,5 @@
 <template>
-        <Upload/>
+        <Upload :api_url="'/api/users/getUserInfo'"/>
 </template>
  
 <script lang='ts'>
