@@ -28,4 +28,13 @@
 自然会想到，响应式的对象，那么这个数据结构应该是一个响应式的数组包裹着响应式的对象，
 ref数组，里面有一系列reactive对象
 
+用代码描述一下这个对象
+
+export interface UploadFile{
+    uid: string;
+    size: number;
+    name: string;
+    status: UploadSatuts;
+    raw: File;
+}
 

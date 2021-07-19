@@ -6,6 +6,12 @@
             <span v-else>点击上传</span>
         </button>
         <input ref="fileInput" type="file" :style="{display: 'none'}" @change="handleFileUpload">
+        <ul>
+            <li :class="`upload-file upload-${file.status}`" v-for="file in uploadedFiles" :key='file.uid'>
+                <span class="filename">{{file.name}}</span>
+                <button class="delete-icon" @click="removeFile(file.uid)">delete</button>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -81,15 +87,27 @@ export default defineComponent({
                     'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEzNjM4MTM3MDA0IiwicGhvbmVOdW1iZXIiOiIxMzYzODEzNzAwNCIsIm5pY2tOYW1lIjoia2tra2siLCJpYXQiOjE2MjY2MTQwNjUsImV4cCI6MTYyNjcwMDQ2NX0.PXHEL4UjEQzlVEDlXmhWnYLo3EJ05UBHM6CmjgxT50s',                }
             })
 
-            if(result.errno == 0){
+            if(result.data.errno == 0){
                 console.log('上传图片成功');
                 fileObj.status='success'
             }else{
                 console.log('上传图片出错');
                 fileObj.status='error'
             }
+
+            //连续传相同的图片的时候没有反应，传不了
+            //change事件被触发的前提条件是input的value值被改变，传了一张图片之后，又传同一张图片，change事件没有被触发，
+            //图片上传完毕之后将input的值清空，解决不能传同名图片的错误。
+            if(fileInput.value){ // dom 节点有可能是null，所以判断一下
+                fileInput.value.value=''
+            }
+            
         }
         console.log('testtest',result);
+    }
+
+    const removeFile=(id: string)=>{
+        uploadedFiles.value=uploadedFiles.value.filter(file=>file.uid!==id)
     }
     return{
         fileInput,
@@ -97,9 +115,22 @@ export default defineComponent({
         fileStatus,
         handleFileUpload,
         isUploading,
-        uploadedFiles
+        uploadedFiles,
+        removeFile,
         
     }
   }
 })
 </script>
+
+<style scoped>
+.upload-loading{
+    color: yellow;
+}
+.upload-success{
+    color: green;
+}
+.upload-error{
+    color: red;
+}
+</style>
