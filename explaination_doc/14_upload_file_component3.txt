@@ -1,0 +1,9 @@
+npm i @ant-design/icons-vue
+
+// 使用scss来写样式
+npm install sass --save-dev
+npm install sass-loader --save-dev
+
+
+// 支持自定义模板
+这一节还不太懂
