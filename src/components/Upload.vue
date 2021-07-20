@@ -1,162 +1,235 @@
 <template>
-    <div class='file-upload'>
-        <!-- input元素是被隐藏的，点击button然后触发input的click事件，就可以传文件了 -->
-        <div class="upload-area" @click="triggerUpload" >
-            <slot  v-if="isUploading" name="loading">
-                <button disabled>正在上传</button>
-            </slot>
-            <slot name="uploaded" v-else-if="lastFileData && lastFileData.loaded" :uploadedData="lastFileData.response">
-                <button>点击上传</button>
-            </slot>
-            <slot  v-else name="default">
-                <button>点击上传</button>
-            </slot>
-        </div>
-        <input ref="fileInput" type="file" :style="{display: 'none'}" @change="handleFileUpload">
-        <ul>
-            <li :class="`upload-file upload-${file.status}`" v-for="file in uploadedFiles" :key='file.uid'>
-                <span v-if="file.status === 'loading'" class="file-icon"><LoadingOutlined/></span>
-                <span v-else class="file-icon"><FileOutlined/></span>
-                <span class="filename">{{file.name}}</span>
-                <span class="delete-icon" @click="removeFile(file.uid)"><DeleteOutlined/></span>
-            </li>
-        </ul>
+  <div class="file-upload">
+    <div class="upload-area"
+      :class="{'is-dragover': drag && isDragOver }"
+      v-on="events"
+    >
+      <slot v-if="isUploading" name="loading">
+        <button disabled>正在上传</button>
+      </slot>
+      <slot name="uploaded" v-else-if="lastFileData && lastFileData.loaded" :uploadedData="lastFileData.data">
+        <button>点击上传</button>
+      </slot>
+      <slot v-else name="default">
+        <button>点击上传</button>
+      </slot> 
     </div>
+    <input
+      ref="fileInput"
+      type="file"
+      :style="{display: 'none'}"
+      @change="handleFileChange"
+    >
+    <ul :class="`upload-list upload-list-${listType}`" v-if="showUploadList">
+      <li :class="`uploaded-file upload-${file.status}`"
+        v-for="file in filesList" 
+        :key="file.uid">
+        <img
+          v-if="file.url && listType === 'picture'"
+          class="upload-list-thumbnail"
+          :src="file.url"
+          :alt="file.name"
+        >
+        <span v-if="file.status === 'loading'" class="file-icon"><LoadingOutlined/></span>
+        <span v-else class="file-icon"><FileOutlined/></span>
+        <span class="filename">{{file.name}}</span>
+        <span class="delete-icon" @click="removeFile(file.uid)"><DeleteOutlined/></span>
+      </li>
+    </ul> 
+  </div>
 </template>
-
 <script lang="ts">
-import { defineComponent, ref, reactive, computed } from 'vue'
-import axios from 'axios'
-import { uuid  } from 'uuidv4'
-import { last } from 'lodash-es'
+import { defineComponent, reactive, ref, computed, PropType } from 'vue'
 import { DeleteOutlined, LoadingOutlined, FileOutlined } from '@ant-design/icons-vue'
-
-type UploadSatuts = 'ready' | 'loading' | 'success' | 'error'
-
-export interface UploadFile{
-    uid: string;
-    size: number;
-    name: string;
-    status: UploadSatuts;
-    raw: File;
-    response?: any;
+import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
+import { last } from 'lodash-es'
+type UploadStaus = 'ready' | 'loading' | 'success' | 'error'
+type FileListType = 'picture' | 'text' 
+type CheckUpload = (file: File) => boolean | Promise<File>
+export interface UploadFile {
+  uid: string;
+  size: number;
+  name: string;
+  status: UploadStaus;
+  raw: File;
+  resp?: any;
+  url?: string;
 }
-
 export default defineComponent({
-  name: 'Hello',
-  props: {
-    api_url: {
-        type: String,
-        required: true,
-    }
-  },
   components: {
     DeleteOutlined,
     LoadingOutlined,
     FileOutlined
   },
-  setup(props){
-    // 要拿到input这个html元素，需要使用ref
-    // <null | HTMLInputElement>(null)的意思是 类型为null 或者 HTMLInputElement，初始值为null
+  props: {
+    api_url: {
+      type: String,
+      required: true
+    },
+    beforeUpload: {
+      type: Function as PropType<CheckUpload>
+    },
+    drag: {
+      type: Boolean,
+      default: false
+    },
+    autoUpload: {
+      type: Boolean,
+      default: true
+    },
+    listType: {
+      type: String as PropType<FileListType>,
+      defualt: 'text'
+    },
+    showUploadList: {
+      type: Boolean,
+      default: true
+    }
+  },
+  emits: ['success', 'error', 'change'],
+  setup(props, { emit }) {
     const fileInput = ref<null | HTMLInputElement>(null)
-
-    const fileStatus = ref<UploadSatuts>('ready')
-
-    const uploadedFiles= ref<UploadFile[]>([])
-
-    // 只要有数组里有一项是loading，那么整个button的状态就是loading，自然使用computed
-    const isUploading= computed(()=>{
-        return uploadedFiles.value.some(file=>file.status==='loading')
+    const filesList = ref<UploadFile[]>([])
+    const isDragOver = ref(false)
+    const isUploading = computed(() => {
+      return filesList.value.some(file => file.status === 'loading')
     })
-
-    //点击 点击上传 按钮触发triggerUpload方法，然后触发input元素里的click事件
-    const triggerUpload=()=>{
-        if(fileInput.value){
-            fileInput.value.click()
+    const lastFileData = computed(() => {
+      const lastFile = last(filesList.value)
+      if (lastFile) {
+        return {
+          loaded: lastFile.status === 'success',
+          data: lastFile.resp
         }
+      }
+      return false
+    })
+    const removeFile = (id: string) => {
+      filesList.value = filesList.value.filter(file => file.uid !== id)
     }
 
-    //
-    const handleFileUpload=async(e: Event)=>{
-
-        const target= e.target as HTMLInputElement
-        const files= target.files
-        let result: any
-
-        if(files){
-            const uploadFile=files[0]
-            const formData= new FormData()
-            formData.append(uploadFile.name,uploadFile)
-
-            const fileObj= reactive<UploadFile>({
-                uid:uuid(),
-                size:uploadFile.size,
-                name: uploadFile.name,
-                status: 'loading',
-                raw: uploadFile,  // 整个文件内容
-            })
-
-            uploadedFiles.value.push(fileObj)
-
-            fileStatus.value='loading'
-            result = await axios.post( props.api_url,formData,{
+    const triggerUpload = () => {
+      if (fileInput.value) {
+        fileInput.value.click()
+      }
+    }
+    const postFile = (readyFile: UploadFile) => {
+      const formData = new FormData()
+      formData.append(readyFile.name, readyFile.raw)
+      readyFile.status = 'loading'
+       axios.post( props.api_url,formData,{
                 headers:{
                     'content-Type':'multipart/form-data',
                     'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEzNjM4MTM3MDA0IiwicGhvbmVOdW1iZXIiOiIxMzYzODEzNzAwNCIsIm5pY2tOYW1lIjoia2tra2siLCJpYXQiOjE2MjY3MDA5NjYsImV4cCI6MTYyNjc4NzM2Nn0.rPzDg2PADSqaRN7zz37bFJtx1qOHQjmiAw-4DkfjxAY',                
                 }
+    }).then(resp => {
+        readyFile.status = 'success'
+        readyFile.resp = resp.data
+        emit('success', { resp: resp.data, file: readyFile, list: filesList.value })
+      }).catch((e: any) => {
+        readyFile.status = 'error'
+        emit('error', { error:e, file: readyFile, list: filesList.value })
+      }).finally(() => {
+        if (fileInput.value) {
+          fileInput.value.value = ''
+        }
+      })
+    }
+    // addFileToList
+    const addFileToList = (uploadedFile: File) => {
+      const fileObj = reactive<UploadFile>({
+        uid: uuidv4(),
+        size: uploadedFile.size,
+        name: uploadedFile.name,
+        status: 'ready',
+        raw: uploadedFile
+      })
+      if (props.listType === 'picture') {
+        try {
+          fileObj.url = URL.createObjectURL(uploadedFile)
+        } catch (err) {
+          console.error('upload File error', err)
+        }
+        // FileReader to preview local image
+        // const fileReader = new FileReader()
+        // fileReader.readAsDataURL(uploadedFile)
+        // fileReader.addEventListener('load', () => {
+        //   fileObj.url = fileReader.result as string
+        // })
+      }
+      filesList.value.push(fileObj)
+      if (props.autoUpload) {
+        postFile(fileObj)
+      }
+    }
+    const beforeUploadCheck = (files: null | FileList) => {
+      if (files) {
+        const uploadedFile = files[0]
+        if (props.beforeUpload) {
+          const result = props.beforeUpload(uploadedFile)
+          if (result && result instanceof Promise) {
+            result.then(processedFile => {
+              if (processedFile instanceof File) {
+                addFileToList(processedFile)
+              } else {
+                throw new Error('beforeUpload Promise should return File object')
+              }
+            }).catch(e => {
+              console.error(e)
             })
-
-            if(result.data.errno == 0){
-                console.log('上传图片成功');
-                fileObj.status='success'
-                fileObj.response=result.data.data
-
-            }else{
-                console.log('上传图片出错');
-                fileObj.status='error'
-            }
-
-            //连续传相同的图片的时候没有反应，传不了
-            //change事件被触发的前提条件是input的value值被改变，传了一张图片之后，又传同一张图片，change事件没有被触发，
-            //图片上传完毕之后将input的值清空，解决不能传同名图片的错误。
-            if(fileInput.value){ // dom 节点有可能是null，所以判断一下
-                fileInput.value.value=''
-            }
-            
+          } else if (result === true) {
+            addFileToList(uploadedFile)
+          }
+        } else {
+          addFileToList(uploadedFile)
         }
-        console.log('testtest',result);
+      }      
+    }
+    const uploadFiles = () => {
+      filesList.value.filter(file => file.status === 'ready').forEach(readyFile => postFile(readyFile))
     }
 
-    const lastFileData=computed(()=>{
-        const lastFile=last(uploadedFiles.value)
-        if(lastFile){
-            return {
-                loaded: lastFile.status==='success',
-                data: lastFile.response
-            }
-        }else{
-            return false
-        }
-        
-    })
-
-    const removeFile=(id: string)=>{
-        uploadedFiles.value=uploadedFiles.value.filter(file=>file.uid!==id)
+    let events: { [key: string]: (e: any) => void } = {
+      'click': triggerUpload
     }
-    return{
-        fileInput,
-        triggerUpload,
-        fileStatus,
-        handleFileUpload,
-        isUploading,
-        uploadedFiles,
-        removeFile,
-        lastFileData,
+    const handleFileChange = (e: Event) => {
+      const target = e.target as HTMLInputElement
+      beforeUploadCheck(target.files)
+    }
+    const handleDrag = (e: DragEvent, over: boolean) => {
+      e.preventDefault()
+      isDragOver.value = over
+    }
+    const handleDrop = (e: DragEvent) => {
+      e.preventDefault()
+      isDragOver.value = false
+      if (e.dataTransfer) {
+        beforeUploadCheck(e.dataTransfer.files)
+      }
+    }
+    if (props.drag) {
+      events = {
+        ...events,
+        'dragover': (e: DragEvent) => { handleDrag(e, true)},
+        'dragleave': (e: DragEvent) => { handleDrag(e, false)},
+        'drop': handleDrop
+      }
+    }
+    return {
+      fileInput,
+      handleFileChange,
+      isUploading,
+      filesList,
+      removeFile,
+      lastFileData,
+      isDragOver,
+      events,
+      uploadFiles
     }
   }
 })
 </script>
-
 <style lang="scss">
 .upload-list {
   margin: 0;
