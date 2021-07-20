@@ -33,7 +33,7 @@
                 @setActive="setElementActive"
                 @deleteItem="deleteItemFromStore"
             >
-                <LText v-bind="component.props"></LText>
+                <component :is="component.name" v-bind="component.props"/>
            </EditWrapper>
         </div>
       </a-layout-content>
@@ -64,6 +64,7 @@ import { GlobalDataProps } from '../store/index';
 
 import ComponentsList from "../components/ComponentsList.vue";
 import LText from "../components/LText.vue";
+import LImage from "../components/LImage.vue";
 import {defaultTextTemplatesList} from '../defaultTextTemplatesList'
 import EditWrapper from '../components/EditWrapper.vue';
 
@@ -74,6 +75,7 @@ export default defineComponent({
 
     components:{
         LText,
+        LImage,
         ComponentsList,
         EditWrapper,
         PropsTable,

@@ -121,12 +121,15 @@ export default defineComponent({
        axios.post( props.api_url,formData,{
                 headers:{
                     'content-Type':'multipart/form-data',
-                    'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEzNjM4MTM3MDA0IiwicGhvbmVOdW1iZXIiOiIxMzYzODEzNzAwNCIsIm5pY2tOYW1lIjoia2tra2siLCJpYXQiOjE2MjY3MDA5NjYsImV4cCI6MTYyNjc4NzM2Nn0.rPzDg2PADSqaRN7zz37bFJtx1qOHQjmiAw-4DkfjxAY',                
+                    // 注意这个token经常变动
+                    'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEzNjM4MTM3MDA0IiwicGhvbmVOdW1iZXIiOiIxMzYzODEzNzAwNCIsIm5pY2tOYW1lIjoia2tra2siLCJpYXQiOjE2MjY3ODc4NDEsImV4cCI6MTYyNjg3NDI0MX0.VVzWoP55x6Qfod9iymR2rnElxTiRvGGQtEtsdJqGhuQ',                
                 }
     }).then(resp => {
         readyFile.status = 'success'
-        readyFile.resp = resp.data
-        emit('success', { resp: resp.data, file: readyFile, list: filesList.value })
+        console.log("resp.data.data",resp.data.data);
+        
+        readyFile.resp = resp.data.data
+        emit('success', { resp: resp.data.data, file: readyFile, list: filesList.value })
       }).catch((e: any) => {
         readyFile.status = 'error'
         emit('error', { error:e, file: readyFile, list: filesList.value })

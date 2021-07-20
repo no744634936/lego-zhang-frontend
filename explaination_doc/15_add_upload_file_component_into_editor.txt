@@ -1,0 +1,20 @@
+
+StyledUploader.vue
+
+helper.ts
+
+StyledUploader.vue 导入 ComponentsList.vue
+
+
+
+修改 defaultProps.ts 文件
+
+export const image_default_props= generate_component_props(image_component_props_with_defalut_value)
+export const image_component_css_props_name_arr = without(Object.keys(image_component_props_with_defalut_value), 'src')
+
+建立LImage文件
+
+
+
+
+
