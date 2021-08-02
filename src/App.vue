@@ -25,12 +25,13 @@
                 </div>
             </a-layout-footer>
         </a-layout>
-        <LText/>
     </div>
     <!-- 不需要header跟footer的页面 -->
     <div class="homepage-container" v-else>
         <router-view></router-view>
     </div>
+
+    
 </template>
 
 <script lang="ts">
@@ -75,3 +76,4 @@ export default defineComponent({
     padding: 0;
 }
 </style>
+// 

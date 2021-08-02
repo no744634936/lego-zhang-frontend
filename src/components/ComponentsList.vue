@@ -21,7 +21,7 @@ import StyledUploader from '../components/StyledUploader.vue'
 import { v4 as uuidv4 } from 'uuid'
 import { message } from 'ant-design-vue'
 import { image_component_props_with_defalut_value} from '../defaultProps'
-
+import { getImageDimensions } from '../helper'
 export default defineComponent({
     name:'components-list',
     emits:['on-item-click'],//发送一个事件
@@ -55,14 +55,13 @@ export default defineComponent({
         console.log("ffffff",resp.urls[0]);
         
         componentData.props.src = resp.urls[0]
-        context.emit('on-item-click', componentData)
 
-        // getImageDimensions(file).then(({ width }) => {
-        //     console.log(width)
-        //     const maxWidth = 373
-        //     componentData.props.width = ((width > maxWidth) ? maxWidth : width) + 'px'
-        //     context.emit('on-item-click', componentData)
-        // })
+        getImageDimensions(file).then(({ width }) => {
+            console.log(width)
+            const maxWidth = 373
+            componentData.props.width = ((width > maxWidth) ? maxWidth : width) + 'px'
+            context.emit('on-item-click', componentData)
+        })
         }
         return {
             onItemClick,
