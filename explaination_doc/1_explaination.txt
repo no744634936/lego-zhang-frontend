@@ -29,9 +29,11 @@ npm run serve
   修改main.ts 文件
 
 8,写views文件夹里的三个页面，
-  写views 里面的三个页面时，先把页面布局一个一个在Index.vue 里面写出来，
-  给页面里的按钮添加link使之可以跳转到别的路由 <router-link> 不需要跳转，可以直接使用
-  然后导入App.vue 看看布局是否正确
+  写views 里面的三个页面时，
+  先把页面布局一个一个导入到Index.vue 里面看看页面效果
+  给页面里的按钮添加link使之可以跳转到别的路由 <router-link> 
+  添加 <router-view></router-view>
+  然后将Index.vue导入App.vue 看看布局是否正确
 
 
 9,布局写完了之后将数据写进template，下载vuex跟redux一样的功能
