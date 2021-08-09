@@ -1,4 +1,19 @@
+
 <template>
+<!-- 
+循环展示一组数据的组件
+a-row 被分为24份，一个a-row里面的可以包含多个a-col 
+a-col的span属性的总和为24 
+24除以6 =4 ,意味着一个a-row里有4个a-col
+
+栅格常常需要和间隔进行配合，你可以使用 Row 的 gutter 属性
+
+a-card是一个卡片component
+
+v-slot 具名插槽。 v-slot 只能添加在 <template> 上 
+https://www.youtube.com/watch?v=WovdX7ZK8F0&list=PLC3y8-rFHvwgeQIfSDtEGVvvSEPDkL_1f&index=38
+a-card 组件里面有很多slot，使用v-slot:description 这样的名字是将，template标签里的内容放进a-card组件里对应的slot里面
+-->
   <div class="gutter-example">
     <a-row :gutter="16" >
       <a-col class="gutter-row" :span="6" v-for="item in list" :key="item.id">

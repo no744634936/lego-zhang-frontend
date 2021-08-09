@@ -19,16 +19,16 @@ npm run serve
 4,将 ant-design-vue 放进app当中
   修改main.ts 文件
 
-
-5,下载vue-router 
-  npm install vue-router@4 --save
-
-6,写 routes/index.ts 文件
-
-7,将 vue-router  放进app当中
-  修改main.ts 文件
-
-8,写views文件夹里的三个页面，
+5,写views文件夹里的三个页面，
   写views 里面的三个页面时，先把页面布局一个一个在Index.vue 里面写出来，
   给页面里的按钮添加link使之可以跳转到别的路由 <router-link> 
   然后将在Index.vue导入App.vue 看看布局是否正确
+
+6,下载vue-router 
+  npm install vue-router@4 --save
+
+7,写 routes/index.ts 文件
+
+8,将 vue-router  放进app当中
+  修改main.ts 文件
+

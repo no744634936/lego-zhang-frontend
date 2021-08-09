@@ -1,5 +1,5 @@
 <template>
-    <!-- 需要header跟footer的页面 -->
+    <!-- 需要header跟footer的页面 在ant design vue的layout章节-->
     <div class="homepage-container">
         <!-- header -->
         <a-layout>
