@@ -39,6 +39,8 @@ const templates: Module<TemplatesProps,GlobalDataProps>={
     //getters里的方法使用有点奇怪,是这样的 store.getters.getTemplateById(1)
     //而不是store.getters.getTemplateById()(1)
     //const template=computed<TemplateProps>(()=>store.getters.getTemplateById(parseInt(currentId)))
+    // 因为这个是high order function.具体看explaination_doc/high_order_function.js 文档
+
     getters:{
         getTemplateById:(state,getters,rootState)=>{
             return (id: number)=>{

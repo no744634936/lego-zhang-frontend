@@ -5,7 +5,6 @@ import Editor from '../views/Editor.vue';
 import TemplateDetail from '../views/TemplateDetail.vue';
 
 const router = createRouter({
-    // history: createWebHistory(), 必须要写上，这句话的背后原理还不太懂
     history: createWebHistory(),
     routes: [
         // meta是这个路由带着的额外的信息、App.vue 文件里用来明确是否使用header

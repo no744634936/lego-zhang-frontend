@@ -43,13 +43,13 @@ export default defineComponent({
     const router = useRouter()
     
     const login = () => {
-      //触发 store里的mutations里的login方法
+      //触发 store里的mutations里的login方法，修改数据
       store.commit('login')
       message.success('登录成功', 2)
     }
 
     const logout = () => {
-      //触发 store里的mutations里的logout方法
+      //触发 store里的mutations里的logout方法，修改数据
       store.commit('logout')
       message.success('退出登录成功，2秒后跳转到首页', 2)
       setTimeout(() => {

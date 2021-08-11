@@ -16,7 +16,7 @@ const user: Module<UserProps,GlobalDataProps>={
         isLogin:false,
         userName:''
     },
-    //修改数据地方法写在这里面
+    //修改数据的方法写在mutations里面
     mutations:{
         login:(state)=> {
             state.isLogin = true

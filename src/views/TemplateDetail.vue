@@ -52,7 +52,6 @@ export default defineComponent({
        
         console.log(currentId);
         console.log(template);
-        
 
         return{
             route,
