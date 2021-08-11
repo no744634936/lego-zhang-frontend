@@ -37,7 +37,7 @@ export default defineComponent({
     
         const {style_props,handleClick}=componentCommonFunc(props,text_component_css_props_name_arr)
         
-
+        console.log("text_component_css_props_name_arr",text_component_css_props_name_arr);
         // 从props 里挑选出来的与css有关的属性跟默认值
         console.log("style_props",style_props);
         

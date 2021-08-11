@@ -53,7 +53,7 @@ export const generate_component_props =(props_obj: {[key: string]: any})=> {
 
     for (const key in props_obj) {
         component_props[key]={
-            type:key.constructor,
+            type:key.constructor, // 直接写String就可以了吧
             default:props_obj[key]
         }
     }
@@ -244,4 +244,15 @@ export const component_default__props=generate_component_props(text_component_pr
 
 // 去掉 "actionType","url","text" 只留保留 文本组件的css 属性的数组
 export const text_component_css_props_name_arr=without(Object.keys(text_component_props_with_defalut_value),"actionType","url","text")
+
+/**
+ text_component_css_props_name_arr 的内容
+
+["fontSize", "fontFamily", "fontWeight", "fontStyle", 
+ "textDecoration", "lineHeight", "textAlign", "color", 
+ "backgroundColor", "height", "width", "paddingLeft", "paddingRight",
+ "paddingTop", "paddingBottom", "borderStyle", "borderColor", "borderWidth", 
+ "borderRadius", "boxShadow", "opacity", "position", "left", "top", "right"
+]
+ */
 

@@ -61,7 +61,7 @@ npm install --save-dev @types/lodash-es
 
    7，点击事件单独封装成一个方法
 
-   8, 在template里面使用将css 属性，click方法，文本内容
+   8, 在template里面使用css 属性，click方法，文本内容
 
 
    //在 views/Editor.vue 文件里使用 components/LText.vue 
