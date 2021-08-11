@@ -4,13 +4,14 @@ import { uuid } from 'uuidv4'
 
 // 这样命名interface比较好一点,表示一个组件里有哪些内容
 export interface ComponentDataProps{
+    // id，uuid v4 生成
+    id: string;
 
-  // 这个元素的 属性，属性请详见下面
-  props: {[key: string]: any};
-  // id，uuid v4 生成
-  id: string;
-  // 业务组件库名称 l-text，l-image 等等 
-  name: string;
+    // 业务组件库名称 l-text，l-image 等等 
+    name: string;
+
+    // 这个元素的 属性，属性请详见下面
+    props: {[key: string]: any};
 }
 
 // 表示编辑器里有哪些组件，现在选中的组件的id是什么

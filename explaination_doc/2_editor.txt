@@ -1,3 +1,5 @@
 npm install uuidv4 --save 
 
-建立一个store/editor.ts文件 并将数据导入  view/Editor.vue里去
+建立一个store/editor.ts文件 
+导入 store/index.ts 文件
+并将数据导入  view/Editor.vue里去
