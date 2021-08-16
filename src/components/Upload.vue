@@ -122,7 +122,7 @@ export default defineComponent({
                 headers:{
                     'content-Type':'multipart/form-data',
                     // 注意这个token经常变动
-                    'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEzNjM4MTM3MDA0IiwicGhvbmVOdW1iZXIiOiIxMzYzODEzNzAwNCIsIm5pY2tOYW1lIjoia2tra2siLCJpYXQiOjE2MjY3ODc4NDEsImV4cCI6MTYyNjg3NDI0MX0.VVzWoP55x6Qfod9iymR2rnElxTiRvGGQtEtsdJqGhuQ',                
+                    'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEzNjM4MTM3MDA0IiwicGhvbmVOdW1iZXIiOiIxMzYzODEzNzAwNCIsIm5pY2tOYW1lIjoia2tra2siLCJpYXQiOjE2MjkwODI0MjksImV4cCI6MTYyOTE2ODgyOX0.qO1bdFd-wXE-kUqvZXjJcoy-qX-2QSRoV5-eq8_Ad_c',                
                 }
     }).then(resp => {
         readyFile.status = 'success'
