@@ -83,7 +83,12 @@ export const mapPropsToForms: LooseObject={
     color: {
         component: 'ColorPicker',
         text: '字体颜色'
-    }
+    },
+
+     // imageComponentProps
+  src: {
+    component: 'ImageProcesser'
+  },
 }
 
 console.log("mapPropsToForms",mapPropsToForms);

@@ -34,6 +34,8 @@ import { reduce } from 'lodash'
 import {  mapPropsToForms } from '../mapPropsToForms'
 import RenderVnode from './RenderVnode'
 import ColorPicker from './ColorPicker.vue'
+import ImageProcesser from './ImageProcesser.vue'
+
 export default defineComponent({
   name: 'props-table',
   props: {
@@ -45,6 +47,7 @@ export default defineComponent({
   components:{
       RenderVnode,
       ColorPicker,
+      ImageProcesser
   },
   emits:['changeValue'],
   setup(props, context) {
@@ -55,7 +58,6 @@ export default defineComponent({
           const item=mapPropsToForms[key]
 
           if(item){
-              
               
               item.value = item.initalTransform ? item.initalTransform(value) : value
               console.log(item.value)

@@ -37,11 +37,10 @@ export default defineComponent({
     LoadingOutlined,
   },
   emits: ['success'],
-  setup(props, { emit }) {
+  setup(props, context) {
     const handleUploadSuccess = (resp: any, file: File) => {
         console.log("图片",resp);
-        
-      emit('success', { resp, file })
+      context.emit('success', { resp, file })
     }
     return {
       commonUploadCheck,
