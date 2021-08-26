@@ -36,6 +36,14 @@ import { DeleteOutlined} from '@ant-design/icons-vue'
 import StyledUploader from './StyledUploader.vue'
 import { UploadResp } from '../extraType'
 import Cropper from 'cropperjs';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid'
+interface CropDataProps {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 export default defineComponent({
   props: {
@@ -89,6 +97,7 @@ export default defineComponent({
     // It is a way to tell the compiler "this expression cannot be null or undefined here, so don't complain about the possibility of it being null or undefined."
     // 不加感叹号，cropper.destroy()就老是报错 Variable 'cropper' is used before being assigned
     let cropper!: Cropper
+    let cropperData: CropDataProps | null =null
     watch(showModal,async (newValue)=>{
         if(newValue===true){
 
@@ -105,13 +114,14 @@ export default defineComponent({
                 cropper=new Cropper(imgElem, {
                     aspectRatio: 16 / 9,
                     crop(event) {
-                        console.log(event.detail.x);
-                        console.log(event.detail.y);
-                        console.log(event.detail.width);
-                        console.log(event.detail.height);
-                        console.log(event.detail.rotate);
-                        console.log(event.detail.scaleX);
-                        console.log(event.detail.scaleY);
+                        const {x,y,width,height}=event.detail
+                        // 将剪裁后的数据转换成整数
+                        cropperData={
+                            x: Math.floor(x),
+                            y: Math.floor(y),
+                            width: Math.floor(width),
+                            height: Math.floor(height),
+                        }
                     },
                 });
             }
@@ -120,18 +130,48 @@ export default defineComponent({
             // 从dom中把跟cropper相关的节点删除
             if(cropper){
                 console.log("distroyed");
-                
                 cropper.destroy()
             }
         }
     })
+    const handleOk = () => {
+        if (cropperData) {
+
+            // 截图的所在地 cropper.getCroppedCanvas()
+            // toBlob 方法将截取的图片转换成二进制
+            cropper.getCroppedCanvas().toBlob((blob) => {
+                if (blob) {
+                    console.log("what is this");
+                    
+                    const formData = new FormData()
+
+                    // 当append的是blob的时候，对象的默认文件名是 "blob"，检查发现不是图片会报错的
+                    // 所以要加第三个参数
+                    // https://developer.mozilla.org/zh-CN/docs/Web/API/FormData/append
+                    formData.append('croppedImage', blob, `${uuidv4()}.png`)
+                    axios.post('/api/vendor/upload-img', formData, {
+                        headers:{
+                            'content-Type':'multipart/form-data',
+                            // 注意这个token经常变动
+                            'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEzNjM4MTM3MDA0IiwicGhvbmVOdW1iZXIiOiIxMzYzODEzNzAwNCIsIm5pY2tOYW1lIjoia2tra2siLCJpYXQiOjE2Mjk4NTI3NzIsImV4cCI6MTYyOTkzOTE3Mn0.NfTBMk7IQWU91Rhzd2cnIRl9GNHfhZYL152vVgWYUu4',                
+                        }
+                    }).then(resp => {
+                        console.log("剪裁之后的图片连接",resp.data.data);
+                        context.emit('change', resp.data.data.urls[0])  //这代码的流程给忘了，还得重新再看一遍
+                        showModal.value = false
+                    })
+                }
+            })
+        }
+    }
     return {
       handleFileUploaded,
       handleDelete,
       backgroundUrl,
       showModal,
       cropperImg,
-      ImageUrl
+      ImageUrl,
+      handleOk
     }
   }
 })

@@ -129,6 +129,8 @@ export default defineComponent({
         console.log("resp.data.data",resp.data.data);
         
         readyFile.resp = resp.data.data
+        
+        // 这个emit() 相当于context.emit()
         emit('success', { resp: resp.data.data, file: readyFile, list: filesList.value })
       }).catch((e: any) => {
         readyFile.status = 'error'
