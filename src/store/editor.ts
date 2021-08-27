@@ -31,7 +31,7 @@ export interface EditorDataProps{
 export const testComponents: ComponentDataProps[]= [
     { id: uuid(), name: 'l-text', props: { text: 'hello', fontSize: '30px', color: '#000000', 'lineHeight': '1', textAlign: 'left', fontFamily: '' },layerName:'图层1'},
     { id: uuid(), name: 'l-text', props: { text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' },layerName:'图层2'},
-    { id: uuid(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' },layerName:'图层2'}
+    { id: uuid(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' },layerName:'图层3'}
   ]
 
 const editor: Module<EditorDataProps,GlobalDataProps>={

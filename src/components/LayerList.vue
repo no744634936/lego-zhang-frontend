@@ -21,6 +21,7 @@
             <template v-slot:icon v-else><LockOutlined /> </template>
             </a-button>
         </a-tooltip>
+        <span>{{item.layerName}}</span>
         </li>
     </ul>
 </template>
