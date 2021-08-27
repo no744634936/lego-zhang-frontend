@@ -1,0 +1,18 @@
+1,修改 editor.ts 文件
+
+添加数据
+    // 图层是否隐藏
+    isHidden?: boolean;
+    // 图层是否锁定
+    isLocked?: boolean;
+    // 图层名称
+    layerName?: string;
+
+    layerName:'图层1'
+    layerName:'图层2'
+    layerName:'图层3'
+
+2，写LayerList.vue 文件
+
+
+3,将LayerList.vue 加进 views/Editor.vue 文件里去

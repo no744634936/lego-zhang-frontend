@@ -6,12 +6,18 @@ import { update } from "lodash-es"
 // 这样命名interface比较好一点
 export interface ComponentDataProps{
 
-  // 这个元素的 属性，属性请详见下面
-  props: {[key: string]: any};
-  // id，uuid v4 生成
-  id: string;
-  // 业务组件库名称 l-text，l-image 等等 
-  name: string;
+    // 这个元素的 属性，属性请详见下面
+    props: {[key: string]: any};
+    // id，uuid v4 生成
+    id: string;
+    // 业务组件库名称 l-text，l-image 等等 
+    name: string;
+    // 图层是否隐藏
+    isHidden?: boolean;
+    // 图层是否锁定
+    isLocked?: boolean;
+    // 图层名称
+    layerName?: string;
 }
 
 export interface EditorDataProps{
@@ -23,9 +29,9 @@ export interface EditorDataProps{
 }
 
 export const testComponents: ComponentDataProps[]= [
-    { id: uuid(), name: 'l-text', props: { text: 'hello', fontSize: '30px', color: '#000000', 'lineHeight': '1', textAlign: 'left', fontFamily: '' }},
-    { id: uuid(), name: 'l-text', props: { text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' }},
-    { id: uuid(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' }}
+    { id: uuid(), name: 'l-text', props: { text: 'hello', fontSize: '30px', color: '#000000', 'lineHeight': '1', textAlign: 'left', fontFamily: '' },layerName:'图层1'},
+    { id: uuid(), name: 'l-text', props: { text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' },layerName:'图层2'},
+    { id: uuid(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' },layerName:'图层2'}
   ]
 
 const editor: Module<EditorDataProps,GlobalDataProps>={

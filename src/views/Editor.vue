@@ -7,6 +7,7 @@
         <ComponentsList :list="defaultTextTemplatesList" @onItemClick="addItem"></ComponentsList>
       </div>
     </a-layout-sider>
+
     <a-layout style="padding: 0 24px 24px">
       <a-layout-content class="preview-container">
         <p>画布区域</p>
@@ -40,26 +41,35 @@
     </a-layout>
 
     <a-layout-sider width="300" style="background: #fff" class="settings-panel">
-      组件属性
-      <PropsTable 
-            v-if="currentEditedElement&& currentEditedElement.props"
-            :props='currentEditedElement.props'
-            @changeValue="handleChangeValue"
-      ></PropsTable>
-      
-      <pre>
-          <!--当 currentEditedElement存在的时候 打印currentEditedElement.props，因为有.props 所以必须判断currentEditedElement是否存在-->
-          {{currentEditedElement&& currentEditedElement.props}}
-      </pre>
-    </a-layout-sider> 
-
+        <a-tabs type="card">
+            <a-tab-pane key="component" tab="属性设置" v-model:activeKey="activePanel">
+                <PropsTable 
+                        v-if="currentEditedElement&& currentEditedElement.props"
+                        :props='currentEditedElement.props'
+                        @changeValue="handleChangeValue"
+                ></PropsTable>
+                
+                <pre>
+                    <!--当 currentEditedElement存在的时候 打印currentEditedElement.props，因为有.props 所以必须判断currentEditedElement是否存在-->
+                    {{currentEditedElement&& currentEditedElement.props}}
+                </pre>
+            </a-tab-pane>
+            <a-tab-pane key="layer" tab="图层设置">
+                <LayerList
+                    :list="components"
+                    :selectedId="currentEditedElement && currentEditedElement.id"
+                >
+                </LayerList>
+            </a-tab-pane>
+        </a-tabs>
+</a-layout-sider> 
   </a-layout>
 </div>
 </template>
 
 <script lang="ts">
 import { useStore } from 'vuex';
-import { defineComponent ,computed} from 'vue';
+import { defineComponent ,computed,ref} from 'vue';
 import { GlobalDataProps } from '../store/index';
 
 import ComponentsList from "../components/ComponentsList.vue";
@@ -70,6 +80,8 @@ import EditWrapper from '../components/EditWrapper.vue';
 
 import PropsTable from '../components/PropsTable.vue'
 
+import LayerList from '../components/LayerList.vue'
+
 export default defineComponent({
     name:"editor",
 
@@ -79,6 +91,7 @@ export default defineComponent({
         ComponentsList,
         EditWrapper,
         PropsTable,
+        LayerList
     },
 
     setup(){
@@ -116,6 +129,8 @@ export default defineComponent({
             store.commit('updateComponent',data)
             
         }
+        // ant design vue 的a-tab-pane 默认显示component这个tab
+        const activePanel=ref('component')
         return {
             components,
             defaultTextTemplatesList,
@@ -125,6 +140,7 @@ export default defineComponent({
             currentEditedElement,
             handleChangeValue,
             deleteItemFromStore,
+            activePanel
         }
     }
 
