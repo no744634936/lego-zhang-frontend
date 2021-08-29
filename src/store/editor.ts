@@ -29,9 +29,9 @@ export interface EditorDataProps{
 }
 
 export const testComponents: ComponentDataProps[]= [
-    { id: uuid(), name: 'l-text', props: { text: 'hello', fontSize: '30px', color: '#000000', 'lineHeight': '1', textAlign: 'left', fontFamily: '' },layerName:'图层1'},
-    { id: uuid(), name: 'l-text', props: { text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' },layerName:'图层2'},
-    { id: uuid(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' },layerName:'图层3'}
+    { id: uuid(), name: 'l-text', props: { text: 'hello', fontSize: '30px', color: '#000000', 'lineHeight': '1', textAlign: 'left', fontFamily: '' },layerName:'图层1',"isLocked":false},
+    { id: uuid(), name: 'l-text', props: { text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' },layerName:'图层2',"isLocked":false},
+    { id: uuid(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' },layerName:'图层3',"isLocked":false}
   ]
 
 const editor: Module<EditorDataProps,GlobalDataProps>={
@@ -57,10 +57,17 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
                 state.components=state.components.filter(component=>component.id !== deleteId)
             }
         },
-        updateComponent(state,{key,value}){
-            const updateCompnent = state.components.find(component=>component.id===state.currentElement)
+        updateComponent(state,{key,value,id,changeRoot}){
+            //(id ||state.currentElement) 表示id存在的时候使用id，如果id 不存在的时候使用state.currentElement
+            const updateCompnent = state.components.find(component=>component.id===(id ||state.currentElement)) 
             if(updateCompnent){
-                updateCompnent.props[key]=value
+                // 判断是在修改，component的root的内容，还是在修改root里的props的内容
+                if(changeRoot){
+                    // 这是TS的一个bug，不能写updateCompnent[key]=value，需要写成下面那样
+                    (updateCompnent as any)[key]=value
+                }else{
+                    updateCompnent.props[key]=value
+                }
             }
         }
     },

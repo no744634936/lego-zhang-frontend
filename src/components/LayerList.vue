@@ -4,9 +4,11 @@
         class="ant-list-items ant-list-bordered"
     >
         <li
-        class="ant-list-item"
         v-for="item in list "
         :key="item.id"
+        class="ant-list-item"
+        :class="{active: item.id===selectedId}"
+        @click="handleClick(item.id)"
         >
         <!-- 根据不同属性，展示不同的图标  ant design vue 里面的-->
         <a-tooltip :title="item.isHidden ? '显示': '隐藏'">
@@ -15,10 +17,10 @@
             <template v-slot:icon v-else><EyeInvisibleOutlined /> </template>
             </a-button>
         </a-tooltip>
-        <a-tooltip :title="item.isLocked ? '解锁' : '锁定'">
-            <a-button shape="circle">
-            <template v-slot:icon v-if="item.isLocked"><UnlockOutlined /> </template>
-            <template v-slot:icon v-else><LockOutlined /> </template>
+        <a-tooltip :title=" (item && item.isLocked )? '解锁' : '锁定'">
+            <a-button shape="circle" @click="handleLock(item.id,'isLocked',!item.isLocked)">
+            <template v-slot:icon v-if="item.isLocked"> <LockOutlined /></template>
+            <template v-slot:icon v-else><UnlockOutlined /> </template>
             </a-button>
         </a-tooltip>
         <span>{{item.layerName}}</span>
@@ -40,7 +42,7 @@ export default defineComponent({
       required: true
     }
   },  
-  emits: ['select', 'change', 'drop'],
+  emits: ['select', 'change', 'drop','lock'],
   components: {
     EyeOutlined,
     EyeInvisibleOutlined,
@@ -49,8 +51,24 @@ export default defineComponent({
   },
   setup (props, context) {
 
-    return {
 
+    const handleLock=(id: string,key: string,value: boolean)=>{
+        const data={
+            id,
+            key,
+            value,
+            changeRoot:true,
+        }
+        context.emit("lock",data)
+    }
+
+    const handleClick=(id: string)=>{
+        context.emit("select",id)
+    }
+
+    return {
+        handleLock,
+        handleClick
     }
   }
 })

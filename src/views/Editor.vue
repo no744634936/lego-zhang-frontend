@@ -44,11 +44,17 @@
         <a-tabs type="card">
             <a-tab-pane key="component" tab="属性设置" v-model:activeKey="activePanel">
                 <PropsTable 
-                        v-if="currentEditedElement&& currentEditedElement.props"
+                        v-if="currentEditedElement && currentEditedElement.props && !currentEditedElement.isLocked"
                         :props='currentEditedElement.props'
                         @changeValue="handleChangeValue"
                 ></PropsTable>
-                
+                 <div v-else>
+                    <a-empty>
+                    <template #description>
+                        <p>该元素被锁定，无法编辑</p>
+                    </template>
+                    </a-empty>
+                </div>
                 <pre>
                     <!--当 currentEditedElement存在的时候 打印currentEditedElement.props，因为有.props 所以必须判断currentEditedElement是否存在-->
                     {{currentEditedElement&& currentEditedElement.props}}
@@ -57,7 +63,9 @@
             <a-tab-pane key="layer" tab="图层设置">
                 <LayerList
                     :list="components"
+                    @lock="handleChangeValue"
                     :selectedId="currentEditedElement && currentEditedElement.id"
+                    @select="setElementActive"
                 >
                 </LayerList>
             </a-tab-pane>
@@ -84,7 +92,6 @@ import LayerList from '../components/LayerList.vue'
 
 export default defineComponent({
     name:"editor",
-
     components:{
         LText,
         LImage,

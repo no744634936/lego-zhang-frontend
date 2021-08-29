@@ -1,0 +1,81 @@
+
+// 锁定功能，那个锁的图标
+layerList.vue
+
+1,
+      const handleLock=(id: string,key: string,value: boolean)=>{
+          const data={
+              id,
+              key,
+              value,
+              changeRoot:true,
+          }
+          context.emit("lock",data)
+      }
+
+2,
+
+ @click="handleLock(item.id,'isLocked',!item.isLocked)"
+
+
+
+
+view/Editor.vue
+
+ 3,
+ @lock="handleChangeValue"
+
+ 4,
+    const handleChangeValue=(data: any)=>{
+        // console.log("event",data); 
+        store.commit('updateComponent',data)
+        
+    }
+
+
+store/editor.ts
+
+5,
+    updateComponent(state,{key,value,id,changeRoot}){
+        //(id ||state.currentElement) 表示id存在的时候使用id，如果id 不存在的时候使用state.currentElement
+        const updateCompnent = state.components.find(component=>component.id===(id ||state.currentElement)) 
+        if(updateCompnent){
+            // 判断是在修改，component的root的内容，还是在修改root里的props的内容
+            if(changeRoot){
+                // 这是TS的一个bug，不能写updateCompnent[key]=value，需要写成下面那样
+                (updateCompnent as any)[key]=value
+            }else{
+                updateCompnent.props[key]=value
+            }
+        }
+    }
+
+6，view/Editor.vue 锁定的时候不能编辑
+
+v-if="!currentElement.isLocked"
+
+<div v-else>
+    <a-empty>
+        <template #description>
+            <p>该元素被锁定，无法编辑</p>
+        </template>
+    </a-empty>
+</div>
+
+
+
+选中后添加一个蓝色边框的功能
+
+7, layerList.vue
+:class="{active: item.id===selectedId}"
+@click="handleClick(item.id)"
+
+
+const handleClick=(id: string)=>{
+    context.emit("select",id)
+}
+
+
+8,view/Editor.vue 
+    :selectedId="currentEditedElement && currentEditedElement.id"
+    @select="setElementActive"
