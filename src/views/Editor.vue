@@ -137,7 +137,7 @@ export default defineComponent({
             
         }
         // ant design vue 的a-tab-pane 默认显示component这个tab
-        const activePanel=ref('component')
+        const activePanel=ref('layer')
         return {
             components,
             defaultTextTemplatesList,

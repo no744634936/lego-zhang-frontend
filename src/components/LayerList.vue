@@ -18,12 +18,13 @@
             </a-button>
         </a-tooltip>
         <a-tooltip :title=" (item && item.isLocked )? '解锁' : '锁定'">
-            <a-button shape="circle" @click="handleLock(item.id,'isLocked',!item.isLocked)">
+            <a-button shape="circle" @click="handleChange(item.id,'isLocked',!item.isLocked)">
             <template v-slot:icon v-if="item.isLocked"> <LockOutlined /></template>
             <template v-slot:icon v-else><UnlockOutlined /> </template>
             </a-button>
         </a-tooltip>
-        <span>{{item.layerName}}</span>
+        <!-- <span>{{item.layerName}}</span> -->
+        <InlineEdit class="edit-area" :value="item.layerName" @change="(valueFromSon) => {handleChange(item.id, 'layerName', valueFromSon)}"></InlineEdit>
         </li>
     </ul>
 </template>
@@ -31,6 +32,7 @@
 import { defineComponent, PropType } from 'vue'
 import { EyeOutlined, EyeInvisibleOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons-vue'
 import { ComponentDataProps } from '../store/editor'
+import InlineEdit from './InlineEdit.vue'
 export default defineComponent({ 
   props: {
     list: {
@@ -48,11 +50,12 @@ export default defineComponent({
     EyeInvisibleOutlined,
     LockOutlined,
     UnlockOutlined,
+    InlineEdit
   },
   setup (props, context) {
 
 
-    const handleLock=(id: string,key: string,value: boolean)=>{
+    const handleChange=(id: string,key: string,value: boolean)=>{
         const data={
             id,
             key,
@@ -67,7 +70,7 @@ export default defineComponent({
     }
 
     return {
-        handleLock,
+        handleChange,
         handleClick
     }
   }
