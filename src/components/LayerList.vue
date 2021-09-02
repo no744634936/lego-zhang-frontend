@@ -1,38 +1,49 @@
 <template>
-    <ul
+    <draggable
+        ghost-class="ghost"
         :list="list"
         class="ant-list-items ant-list-bordered"
+        handle=".handle"
+        item-key="id"
     >
-        <li
-        v-for="item in list "
-        :key="item.id"
-        class="ant-list-item"
-        :class="{active: item.id===selectedId}"
-        @click="handleClick(item.id)"
-        >
-        <!-- 根据不同属性，展示不同的图标  ant design vue 里面的-->
-        <a-tooltip :title="item.isHidden ? '显示': '隐藏'">
-            <a-button shape="circle">
-            <template v-slot:icon v-if="item.isHidden"><EyeOutlined /> </template>
-            <template v-slot:icon v-else><EyeInvisibleOutlined /> </template>
-            </a-button>
-        </a-tooltip>
-        <a-tooltip :title=" (item && item.isLocked )? '解锁' : '锁定'">
-            <a-button shape="circle" @click="handleChange(item.id,'isLocked',!item.isLocked)">
-            <template v-slot:icon v-if="item.isLocked"> <LockOutlined /></template>
-            <template v-slot:icon v-else><UnlockOutlined /> </template>
-            </a-button>
-        </a-tooltip>
-        <!-- <span>{{item.layerName}}</span> -->
-        <InlineEdit class="edit-area" :value="item.layerName" @change="(valueFromSon) => {handleChange(item.id, 'layerName', valueFromSon)}"></InlineEdit>
-        </li>
-    </ul>
+        <template #item="{ element }">
+            <li
+            class="ant-list-item"
+            :key="element.id"
+            :class="{active: element.id===selectedId}"
+            @click="handleClick(element.id)"
+            >
+                <!-- 根据不同属性，展示不同的图标  ant design vue 里面的-->
+                <a-tooltip :title="element.isHidden ? '显示': '隐藏'">
+                    <a-button shape="circle">
+                        <template v-slot:icon v-if="element.isHidden"><EyeOutlined /> </template>
+                        <template v-slot:icon v-else><EyeInvisibleOutlined /> </template>
+                    </a-button>
+                </a-tooltip>
+                <a-tooltip :title=" (element && element.isLocked )? '解锁' : '锁定'">
+                    <a-button shape="circle" @click="handleChange(element.id,'isLocked',!element.isLocked)">
+                        <template v-slot:icon v-if="element.isLocked"> <LockOutlined /></template>
+                        <template v-slot:icon v-else><UnlockOutlined /> </template>
+                    </a-button>
+                </a-tooltip>
+                <!-- <span>{{element.layerName}}</span> -->
+                <InlineEdit class="edit-area" :value="element.layerName" @change="(valueFromSon) => {handleChange(element.id, 'layerName', valueFromSon)}"></InlineEdit>
+             <a-tooltip title="拖动排序">
+                <a-button shape="circle" class="handle">
+                    <template v-slot:icon><DragOutlined /> </template>
+                </a-button>
+            </a-tooltip>
+            </li>
+        </template>
+    </draggable>
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { EyeOutlined, EyeInvisibleOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons-vue'
+import { EyeOutlined, EyeInvisibleOutlined, LockOutlined, UnlockOutlined,DragOutlined } from '@ant-design/icons-vue'
 import { ComponentDataProps } from '../store/editor'
 import InlineEdit from './InlineEdit.vue'
+import draggable from "vuedraggable"
+
 export default defineComponent({ 
   props: {
     list: {
@@ -50,7 +61,9 @@ export default defineComponent({
     EyeInvisibleOutlined,
     LockOutlined,
     UnlockOutlined,
-    InlineEdit
+    DragOutlined,
+    InlineEdit,
+    draggable,
   },
   setup (props, context) {
 

@@ -38,7 +38,13 @@ export default defineComponent({
   },
   emits: ['change'],
   setup (props, context) {
+    
     const innerValue = ref(props.value)
+    // innerValue是从父组件layList.vue 传过来的，当props更新的时候，也要将对应的innerValue做个更新
+    watch(() => props.value, (newValue) => {
+      innerValue.value = newValue
+    })
+
     const inputRef = ref<null | HTMLInputElement>(null)
     const isEditing = ref(false)
     let cachedOldValue = ''
