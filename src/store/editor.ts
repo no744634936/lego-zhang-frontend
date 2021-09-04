@@ -1,5 +1,9 @@
 import {Module} from "vuex"
 import {GlobalDataProps} from "./index"
+// 自己的zhang-lego-components 用不了，不知什么原因，这里先使用用 lego-bricks来代替
+// import text_component_props_with_defalut_value from "zhang-lego-components"
+// import image_component_props_with_defalut_value from "zhang-lego-components"
+import { textDefaultProps, imageDefaultProps } from 'lego-bricks'
 import { uuid } from 'uuidv4'
 import { update } from "lodash-es"
 
@@ -29,10 +33,11 @@ export interface EditorDataProps{
 }
 
 export const testComponents: ComponentDataProps[]= [
-    { id: uuid(), name: 'l-text', props: { text: 'hello', fontSize: '30px', color: '#000000', 'lineHeight': '1', textAlign: 'left', fontFamily: '' },layerName:'图层1',"isLocked":false},
-    { id: uuid(), name: 'l-text', props: { text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' },layerName:'图层2',"isLocked":false},
-    { id: uuid(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' },layerName:'图层3',"isLocked":false}
-  ]
+    { id: uuid(), name: 'l-text', props: {...textDefaultProps, text: 'hello', fontSize: '30px', color: '#000000', 'lineHeight': '1', textAlign: 'left', fontFamily: '' },layerName:'图层1',"isLocked":false},
+    { id: uuid(), name: 'l-text', props: {...textDefaultProps,text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' },layerName:'图层2',"isLocked":false},
+    { id: uuid(), name: 'l-text', props: {...textDefaultProps,text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' },layerName:'图层3',"isLocked":false},
+    { id: uuid(), name: 'l-image', layerName:'图层4', props: {...imageDefaultProps,src: 'http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f3e3a17c305b1070f455202.jpg', width: '100px' }},
+]
 
 const editor: Module<EditorDataProps,GlobalDataProps>={
     state:{
@@ -73,6 +78,8 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
     },
     getters:{
         getCurrentEditedElement: (state)=>{
+            console.log("不行啊",state);
+            
             return  state.components.find(component=>component.id===state.currentElement)
         }
     }

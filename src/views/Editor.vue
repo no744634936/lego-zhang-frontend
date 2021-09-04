@@ -43,11 +43,11 @@
     <a-layout-sider width="300" style="background: #fff" class="settings-panel">
         <a-tabs type="card">
             <a-tab-pane key="component" tab="属性设置" v-model:activeKey="activePanel">
-                <PropsTable 
+                <EditGroup 
                         v-if="currentEditedElement && currentEditedElement.props && !currentEditedElement.isLocked"
                         :props='currentEditedElement.props'
                         @changeValue="handleChangeValue"
-                ></PropsTable>
+                ></EditGroup>
                  <div v-else>
                     <a-empty>
                     <template #description>
@@ -90,6 +90,8 @@ import PropsTable from '../components/PropsTable.vue'
 
 import LayerList from '../components/LayerList.vue'
 
+import EditGroup from "../components/EditGroup.vue"
+
 export default defineComponent({
     name:"editor",
     components:{
@@ -98,7 +100,8 @@ export default defineComponent({
         ComponentsList,
         EditWrapper,
         PropsTable,
-        LayerList
+        LayerList,
+        EditGroup
     },
 
     setup(){
