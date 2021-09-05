@@ -29,8 +29,14 @@ export interface EditorDataProps{
   components: ComponentDataProps[];
   // 当前编辑的是哪个元素，uuid
   currentElement: string;
-  // 当然最后保存的时候还有有一些项目信息，这里并没有写出，等做到的时候再补充
+  page: PageData;
 }
+
+
+export interface PageData {
+    props:{[key: string]: any};
+    title: string;
+  }
 
 export const testComponents: ComponentDataProps[]= [
     { id: uuid(), name: 'l-text', props: {...textDefaultProps, text: 'hello', fontSize: '30px', color: '#000000', 'lineHeight': '1', textAlign: 'left', fontFamily: '' },layerName:'图层1',"isLocked":false},
@@ -39,10 +45,16 @@ export const testComponents: ComponentDataProps[]= [
     { id: uuid(), name: 'l-image', layerName:'图层4', props: {...imageDefaultProps,src: 'http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f3e3a17c305b1070f455202.jpg', width: '100px' }},
 ]
 
+const pageDefaultProps = { backgroundColor: '#ffffff', backgroundImage: 'url("https://static.imooc-lego.com/upload-files/%E5%B9%BC%E5%84%BF%E5%9B%AD%E8%83%8C%E6%99%AF%E5%9B%BE-994372.jpg")', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', height: '560px' }
+
 const editor: Module<EditorDataProps,GlobalDataProps>={
     state:{
         components:testComponents,
         currentElement:"",
+        page:{
+            props: pageDefaultProps,
+            title: "test title"
+        }
     },
 
     // 修改state使用motations 获取state里的值使用 getters

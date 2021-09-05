@@ -12,30 +12,32 @@
       <a-layout-content class="preview-container">
         <p>画布区域</p>
         <div class="preview-list" id="canvas-area">
-          <!-- v-bind="component.props"  的意思就是将 component.props 这个对象传给LText里的props 这是v-bind单独使用时的作用-->
-          <!-- 
-          <LText
-            v-for="component in components" 
-            :key="component.id" 
-            v-bind="component.props"
-          >
-          </LText>
+            <div class="body-container" style="height:1000px">
+                <!-- v-bind="component.props"  的意思就是将 component.props 这个对象传给LText里的props 这是v-bind单独使用时的作用-->
+                <!-- 
+                <LText
+                    v-for="component in components" 
+                    :key="component.id" 
+                    v-bind="component.props"
+                >
+                </LText>
 
-          使用EditWrapper 让逻辑跟业务分离
-          像LText 这种类型的html 展示型的组件，里面就别写上for ，if ，点击，拖拽事件之类的逻辑了，
-          在外面包裹一层wrapper 在这个wrapper里面写逻辑就好
-           -->
-           <EditWrapper 
-                v-for="component in components" 
-                :key="component.id" 
-                :id="component.id"
-                :active="component.id===(currentEditedElement&& currentEditedElement.id)"
-                
-                @setActive="setElementActive"
-                @deleteItem="deleteItemFromStore"
-            >
-                <component :is="component.name" v-bind="component.props"/>
-           </EditWrapper>
+                使用EditWrapper 让逻辑跟业务分离
+                像LText 这种类型的html 展示型的组件，里面就别写上for ，if ，点击，拖拽事件之类的逻辑了，
+                在外面包裹一层wrapper 在这个wrapper里面写逻辑就好
+                -->
+                <EditWrapper 
+                        v-for="component in components" 
+                        :key="component.id" 
+                        :id="component.id"
+                        :active="component.id===(currentEditedElement&& currentEditedElement.id)"
+                        
+                        @setActive="setElementActive"
+                        @deleteItem="deleteItemFromStore"
+                    >
+                        <component :is="component.name" v-bind="component.props"/>
+                </EditWrapper>
+           </div>
         </div>
       </a-layout-content>
     </a-layout>
@@ -69,8 +71,11 @@
                 >
                 </LayerList>
             </a-tab-pane>
+            <a-tab-pane key="page" tab="背景页面设置">
+                <PropsTable :props="page.props"></PropsTable>
+            </a-tab-pane>
         </a-tabs>
-</a-layout-sider> 
+    </a-layout-sider> 
   </a-layout>
 </div>
 </template>
@@ -109,6 +114,7 @@ export default defineComponent({
 
 
         const components=computed(()=>{return store.state.editor.components})
+        const page = computed(() => store.state.editor.page)
 
         // console.log("components",components);
         const currentEditedElement= computed(()=>store.getters.getCurrentEditedElement)
@@ -150,7 +156,8 @@ export default defineComponent({
             currentEditedElement,
             handleChangeValue,
             deleteItemFromStore,
-            activePanel
+            activePanel,
+            page,
         }
     }
 
