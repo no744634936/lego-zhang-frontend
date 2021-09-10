@@ -18,7 +18,7 @@
   <div class="image-processer">
     <div class="image-preview" :style="{ backgroundImage: backgroundUrl }" :class="{ 'extraHeight': showDelete }"></div>
     <div class="image-process">
-      <styled-uploader  @success="handleFileUploaded"></styled-uploader>
+      <StyledUploader  @success="handleFileUploaded"></StyledUploader>
       <a-button  @click="showModal = true">
         <template v-slot:icon><ScissorOutlined /></template>裁剪图片
       </a-button>
@@ -78,6 +78,8 @@ export default defineComponent({
     }
 
     const handleDelete = () => {
+      console.log("wowowow");
+      
       context.emit('change', '')
     }
 

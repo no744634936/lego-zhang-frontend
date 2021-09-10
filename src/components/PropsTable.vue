@@ -35,6 +35,7 @@ import {  mapPropsToForms } from '../mapPropsToForms'
 import RenderVnode from './RenderVnode'
 import ColorPicker from './ColorPicker.vue'
 import ImageProcesser from './ImageProcesser.vue'
+import BackgroundProcesser from './BackgroundProcesser.vue'
 
 export default defineComponent({
   name: 'props-table',
@@ -47,7 +48,8 @@ export default defineComponent({
   components:{
       RenderVnode,
       ColorPicker,
-      ImageProcesser
+      ImageProcesser,
+      BackgroundProcesser,
   },
   emits:['changeValue'],
   setup(props, context) {

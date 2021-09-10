@@ -34,7 +34,7 @@ export interface EditorDataProps{
 
 
 export interface PageData {
-    props:{[key: string]: any};
+    props: {[key: string]: any};
     title: string;
   }
 
@@ -86,6 +86,10 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
                     updateCompnent.props[key]=value
                 }
             }
+        },
+        updatePage(state, { key, value }) {
+            
+            state.page.props[key] = value
         }
     },
     getters:{

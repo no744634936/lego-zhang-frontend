@@ -1,10 +1,11 @@
 <template>
   <div class="background-processer">
-    <styled-uploader 
+    <!-- 有value使用StyledUploader组件来展示图片，及其图片周边功能，没有value就使用ImageProcesser组件，上传图片 -->
+    <StyledUploader 
       v-if="!value"
       @success="onImageUploaded"
     >
-    </styled-uploader>
+    </StyledUploader>
     <ImageProcesser
       v-else
       :value="value"
@@ -40,6 +41,10 @@ export default defineComponent({
       context.emit('change', resp.data.url)
     }
     const handleUploadUrl = (url: string) => {
+
+      console.log("kkkk")
+      console.log(url==="")
+    
       context.emit('change', url)
     }
     return {
