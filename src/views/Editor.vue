@@ -20,6 +20,7 @@
                         :active="component.id===(currentEditedElement&& currentEditedElement.id)"
                         @setActive="setElementActive"
                         @deleteItem="deleteItemFromStore"
+                        :props="component.props"
                     >
                         <component :is="component.name" v-bind="component.props"/>
                 </EditWrapper>
