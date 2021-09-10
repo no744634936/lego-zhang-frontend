@@ -12,12 +12,10 @@
   </div>
   <span  @click="deleteItem(id)">x</span>
 </div>
-
-  
 </template>
 
 <script lang="ts">
-import { defineComponent,computed,ref} from 'vue'
+import { defineComponent,computed,ref,nextTick} from 'vue'
 import { pick } from 'lodash-es'
 export default defineComponent({
   // 从父组件传过来的props
@@ -34,7 +32,7 @@ export default defineComponent({
         type:Object,
     }
   },
-  emits: ['setActive','deleteItem'],
+  emits: ['setActive','deleteItem','update-position'],
   setup(props, context) {
     const editWrapper = ref<null | HTMLElement>(null)
     const onItemClick = (id: string) => {
@@ -50,8 +48,18 @@ export default defineComponent({
       x: 0,
       y: 0
     }
+    let isMoving = false
     const styles = computed(() => pick(props.props, ['position', 'top', 'left', 'width', 'height']))
     
+    const caculateMovePosition = (e: MouseEvent) => {
+      const container = document.getElementById('canvas-area') as HTMLElement
+      const left = e.clientX - gap.x - container.offsetLeft
+      const top = e.clientY - gap.y - container.offsetTop  + container.scrollTop
+      return {
+        left,
+        top
+      }
+    }
     const startMove = (e: MouseEvent) => {
         const currentElement = editWrapper.value
         if (currentElement) {
@@ -60,6 +68,28 @@ export default defineComponent({
             gap.y = e.clientY - top
             console.log(gap)
         }
+        const handleMove = (e: MouseEvent) => {
+            const { left, top } = caculateMovePosition(e)
+            isMoving = true
+            console.log(left, top)
+            if (currentElement) {
+            currentElement.style.top = top + 'px'
+            currentElement.style.left = left + 'px'
+            }
+        }
+        const handleMouseUp = (e: MouseEvent) => {
+            document.removeEventListener('mousemove', handleMove)
+            if (isMoving) {
+            const { left, top } = caculateMovePosition(e)
+            context.emit('update-position', { left, top, id: props.id })
+            isMoving = false
+            }
+            nextTick(() => {
+            document.removeEventListener('mouseup', handleMouseUp)
+            })
+        }
+        document.addEventListener('mousemove', handleMove)
+        document.addEventListener('mouseup', handleMouseUp)
     }
     
     return {

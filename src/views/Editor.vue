@@ -21,6 +21,7 @@
                         @setActive="setElementActive"
                         @deleteItem="deleteItemFromStore"
                         :props="component.props"
+                        @update-position="updatePosition"
                     >
                         <component :is="component.name" v-bind="component.props"/>
                 </EditWrapper>
@@ -83,7 +84,7 @@ import PropsTable from '../components/PropsTable.vue'
 import LayerList from '../components/LayerList.vue'
 
 import EditGroup from "../components/EditGroup.vue"
-
+import { pickBy, forEach } from 'lodash-es'
 export default defineComponent({
     name:"editor",
     components:{
@@ -139,6 +140,13 @@ export default defineComponent({
             console.log('page', e)
             store.commit('updatePage', e)
         }
+        const updatePosition = (data: { left: number; top: number; id: string }) => {
+            const { id } = data
+            const updatedData = pickBy<number>(data, (v, k) => k !== 'id')
+            const keysArr = Object.keys(updatedData)
+            const valuesArr = Object.values(updatedData).map(v => v + 'px')
+            store.commit('updateComponent', { key: keysArr, value: valuesArr, id })
+        }
         return {
             components,
             defaultTextTemplatesList,
@@ -151,6 +159,7 @@ export default defineComponent({
             activePanel,
             page,
             pageChange,
+            updatePosition,
         }
     }
 
