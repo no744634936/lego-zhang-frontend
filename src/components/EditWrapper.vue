@@ -81,12 +81,11 @@ export default defineComponent({
             const { left, top } = currentElement.getBoundingClientRect() 
             gap.x = e.clientX - left
             gap.y = e.clientY - top
-            console.log(gap)
         }
         const handleMove = (e: MouseEvent) => {
             const { left, top } = caculateMovePosition(e)
             isMoving = true
-            console.log(left, top)
+
             if (currentElement) {
             currentElement.style.top = top + 'px'
             currentElement.style.left = left + 'px'
