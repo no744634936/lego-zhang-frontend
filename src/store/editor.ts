@@ -274,6 +274,42 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
                 break
             }
         },
+        redo (state) {
+            // can't redo when historyIndex is the last item or historyIndex is never moved
+            if (state.historyIndex === -1) {
+              return
+            }
+            // get the record
+            const history = state.histories[state.historyIndex]
+            // process the history data
+            switch (history.type) {
+              case 'add':
+                state.components.push(history.data)
+                // state.components = insertAt(state.components, history.index as number, history.data)
+                break
+              case 'delete':
+                state.components = state.components.filter(component => component.id !== history.componentId)
+                break
+              case 'modify': {
+                const {componentId,data}=history
+                const {key,newValue}=data
+                let updatedComponent: any=null
+
+                state.components.forEach(component=>{
+                    if(component.id===componentId){
+                        updatedComponent=component
+                    }
+                })
+                if(updatedComponent){
+                    updatedComponent.props[key]=newValue
+                }
+                break
+              }
+              default:
+                break
+            }
+            state.historyIndex++
+        },
     },
     getters:{
         getCurrentEditedElement: (state)=>{
@@ -290,6 +326,17 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
             }
             return false
         },
+        checkRedoDisable: (state) => {
+            // 1 no history item
+            // 2 move to the last item
+            // 3 never undo before
+            if (state.histories.length === 0 || 
+              state.historyIndex === state.histories.length ||
+              state.historyIndex === -1) {
+              return true
+            }
+            return false      
+        }
     }
 }
 
