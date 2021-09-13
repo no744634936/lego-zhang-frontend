@@ -8,7 +8,19 @@ import { uuid } from 'uuidv4'
 import { update } from "lodash-es"
 import { message } from 'ant-design-vue'
 import { cloneDeep } from 'lodash-es'
+import { insertAt } from '../helper'
+
+
 export type MoveDirection = 'Up' | 'Down' | 'Left' | 'Right'
+
+// 根据redo_undo.pdf这个图来写的interface
+export interface HistoryProps {
+    id: string;
+    componentId: string;
+    type: 'add' | 'delete' | 'modify';
+    data: any;
+    index?: number;
+}
 
 // 这样命名interface比较好一点
 export interface ComponentDataProps{
@@ -35,6 +47,10 @@ export interface EditorDataProps{
     page: PageData;
     // 当前被复制的组件
     copiedComponent?: ComponentDataProps;
+    // 当前操作的历史记录
+    histories: HistoryProps[];
+    // 当前历史记录的操作位置
+    historyIndex: number;
 }
 
 
@@ -81,15 +97,28 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
         page:{
             props: pageDefaultProps,
             title: "test title"
-        }
+        },
+        histories:[],
+        historyIndex:-1,  //-1 代表指针没有移动过
     },
 
     // 修改state使用motations 获取state里的值使用 getters
     mutations:{
+        resetEditor(state) {
+            state.components = []
+            state.currentElement = ''
+            state.historyIndex = -1
+            state.histories = []
+        },
         addComponent(state, component) {
             component.layerName = '图层' + (state.components.length + 1)
             state.components.push(component)
-            console.log("state.components",state.components);
+            pushHistory(state, {
+                id: uuid(),
+                componentId: component.id,
+                type: 'add',
+                data: cloneDeep(component)
+            })
         },
         // 使用这个方法，store 就知道了现在正在编辑的component是哪一个。
         setElementActive(state,currentId: string){
@@ -110,7 +139,18 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
                     // 这是TS的一个bug，不能写updateCompnent[key]=value，需要写成下面那样
                     (updateCompnent as any)[key]=value
                 }else{
+                    const oldValue =  updateCompnent.props[key]
                     updateCompnent.props[key]=value
+                    state.histories.push({
+                        id: uuid(),
+                        componentId:(id || state.currentElement),
+                        type:"modify",
+                        data:{
+                            oldValue,
+                            newValue: value,
+                            key,
+                        }
+                    })
                 }
             }
         },
@@ -193,6 +233,47 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
               }
             }
         },
+        undo(state) {
+            // never undo before
+            if (state.historyIndex === -1) {
+              // undo the last item of the array
+              state.historyIndex = state.histories.length - 1
+            } else {
+              // undo to the previous step
+              state.historyIndex--
+            }
+            // get the history record
+            const history = state.histories[state.historyIndex]
+            switch (history.type) {
+              case 'add':
+                // if create a component, we should remove it
+                state.components = state.components.filter(component => component.id !== history.componentId)
+                break
+              case 'delete':
+                // if delete a component, we should restore it to the right position
+                state.components = insertAt(state.components, history.index as number, history.data)
+                break
+              case 'modify': {
+                // get the modified component by id, restore to the old value
+                const {componentId,data}=history
+                const {key,oldValue}=data
+                let updatedComponent: any=null
+
+                state.components.forEach(component=>{
+                    if(component.id===componentId){
+                        updatedComponent=component
+                    }
+                })
+                
+                if(updatedComponent){
+                    updatedComponent.props[key]=oldValue
+                }
+                break
+              }
+              default:
+                break
+            }
+        },
     },
     getters:{
         getCurrentEditedElement: (state)=>{
@@ -200,6 +281,14 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
         },
         getElement: (state) => (id: string) => {
             return state.components.find((component) => component.id === (id || state.currentElement))
+        },
+        checkUndoDisable: (state) => {
+            // 1 no history item
+            // 2 move to the first item
+            if (state.histories.length === 0 || state.historyIndex === 0) {
+              return true
+            }
+            return false
         },
     }
 }

@@ -11,6 +11,7 @@
     <a-layout style="padding: 0 24px 24px">
       <a-layout-content class="preview-container">
         <p>画布区域</p>
+        <HistoryArea></HistoryArea>
         <div class="preview-list" id="canvas-area">
             <div class="body-container"  :style="page.props">
                 <EditWrapper 
@@ -84,6 +85,7 @@ import PropsTable from '../components/PropsTable.vue'
 import LayerList from '../components/LayerList.vue'
 
 import EditGroup from "../components/EditGroup.vue"
+import HistoryArea from "../components/HistoryArea.vue"
 import { pickBy, forEach } from 'lodash-es'
 import initHotKeys from '../plugins/hotKeys'
 
@@ -98,7 +100,8 @@ export default defineComponent({
         PropsTable,
         LayerList,
         EditGroup,
-        initHotKeys
+        initHotKeys,
+        HistoryArea
     },
 
     setup(){
