@@ -56,4 +56,15 @@ export const insertAt = (arr: any[], index: number, newItem: any) => {
       ...arr.slice(index)
     ]
   }
+
+  export const getParentElement = (element: HTMLElement, className: string) => {
+    while (element) {
+      if (element.classList && element.classList.contains(className)) {
+        return element
+      } else {
+        element = element.parentNode as HTMLElement
+      }
+    }
+    return null
+  }
   

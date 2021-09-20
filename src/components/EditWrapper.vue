@@ -7,6 +7,7 @@
     :class="{ active: active }"
     ref="editWrapper"
     @mousedown="startMove"
+    :data-component-id="id"
     >
     <slot></slot>
     <div class="resizers">

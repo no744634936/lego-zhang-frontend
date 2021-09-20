@@ -88,6 +88,7 @@ import EditGroup from "../components/EditGroup.vue"
 import HistoryArea from "../components/HistoryArea.vue"
 import { pickBy, forEach } from 'lodash-es'
 import initHotKeys from '../plugins/hotKeys'
+import initContextMenu from '../plugins/contextMenu'
 
 
 export default defineComponent({
@@ -106,6 +107,7 @@ export default defineComponent({
 
     setup(){
         initHotKeys()
+        initContextMenu()
         const store=useStore<GlobalDataProps>();
 
 
