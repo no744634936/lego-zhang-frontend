@@ -51,6 +51,10 @@ export interface EditorDataProps{
     histories: HistoryProps[];
     // 当前历史记录的操作位置
     historyIndex: number;
+    // 开始更新时的缓存值
+    cachedOldValues: any;
+    // 保存最多历史条目记录数
+    maxHistoryNumber: number;
 }
 
 
@@ -88,8 +92,45 @@ const pushHistory = (state: any, historyRecord: any) => {
       state.histories.shift()
       state.histories.push(historyRecord)
     }
+}
+const modifyHistory = (state: any, history: HistoryProps, type: 'undo' | 'redo') => {
+    const { componentId, data } = history
+    const { key, oldValue, newValue } = data
+    const newKey = key as keyof any | Array<keyof any>
+    const updatedComponent = state.components.find((component: any) => component.id === componentId)
+    if (updatedComponent) {
+      // check if key is array
+      if (Array.isArray(newKey)) {
+        newKey.forEach((keyName, index) => {
+          updatedComponent.props[keyName] = type === 'undo' ? oldValue[index] : newValue[index]
+        })
+      } else {
+        updatedComponent.props[newKey] = type === 'undo' ? oldValue : newValue
+      }
+    }
+}
+const debounceChange = (callback: (...args: any) => void, timeout = 1000) => {
+    let timer = 0
+    return (...args: any) => {
+      console.log(timer)
+      clearTimeout(timer)
+      timer = window.setTimeout(() => {
+        timer = 0
+        callback(...args)
+      }, timeout) 
+    }
   }
 
+const pushModifyHistory = (state: any, { key, value, id }: any) => {
+    pushHistory(state, {
+      id: uuid(),
+      componentId: (id || state.currentElement),
+      type: 'modify',
+      data: { oldValue: state.cachedOldValues, newValue: value, key }
+    })
+    state.cachedOldValues = null
+}
+const pushHistoryDebounce = debounceChange(pushModifyHistory)
 const editor: Module<EditorDataProps,GlobalDataProps>={
     state:{
         components:testComponents,
@@ -100,6 +141,8 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
         },
         histories:[],
         historyIndex:-1,  //-1 代表指针没有移动过
+        cachedOldValues: null,
+        maxHistoryNumber: 5,
     },
 
     // 修改state使用motations 获取state里的值使用 getters
@@ -129,6 +172,7 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
                 state.components=state.components.filter(component=>component.id !== deleteId)
             }
         },
+        
         updateComponent(state,{key,value,id,changeRoot}){
             console.log("nnnn",key,value,id);
             //(id ||state.currentElement) 表示id存在的时候使用id，如果id 不存在的时候使用state.currentElement
@@ -139,18 +183,18 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
                     // 这是TS的一个bug，不能写updateCompnent[key]=value，需要写成下面那样
                     (updateCompnent as any)[key]=value
                 }else{
-                    const oldValue =  updateCompnent.props[key]
-                    updateCompnent.props[key]=value
-                    state.histories.push({
-                        id: uuid(),
-                        componentId:(id || state.currentElement),
-                        type:"modify",
-                        data:{
-                            oldValue,
-                            newValue: value,
-                            key,
-                        }
-                    })
+                    const oldValue = Array.isArray(key) ? key.map(key => updateCompnent.props[key]) : updateCompnent.props[key]
+                    if (!state.cachedOldValues) {
+                        state.cachedOldValues = oldValue
+                    }
+                    pushHistoryDebounce(state,  { key, value, id })
+                    if(Array.isArray(key) && Array.isArray(value)){
+                        key.forEach((keyName,index)=>{
+                            updateCompnent.props[keyName]=value[index]
+                        })
+                    }else if (typeof key ==='string' && typeof value === 'string') {
+                        updateCompnent.props[key]=value
+                    }
                 }
             }
         },
@@ -254,20 +298,7 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
                 state.components = insertAt(state.components, history.index as number, history.data)
                 break
               case 'modify': {
-                // get the modified component by id, restore to the old value
-                const {componentId,data}=history
-                const {key,oldValue}=data
-                let updatedComponent: any=null
-
-                state.components.forEach(component=>{
-                    if(component.id===componentId){
-                        updatedComponent=component
-                    }
-                })
-                
-                if(updatedComponent){
-                    updatedComponent.props[key]=oldValue
-                }
+                modifyHistory(state, history, 'undo')
                 break
               }
               default:
@@ -291,18 +322,7 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
                 state.components = state.components.filter(component => component.id !== history.componentId)
                 break
               case 'modify': {
-                const {componentId,data}=history
-                const {key,newValue}=data
-                let updatedComponent: any=null
-
-                state.components.forEach(component=>{
-                    if(component.id===componentId){
-                        updatedComponent=component
-                    }
-                })
-                if(updatedComponent){
-                    updatedComponent.props[key]=newValue
-                }
+                modifyHistory(state, history, 'redo')
                 break
               }
               default:
