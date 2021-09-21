@@ -3,7 +3,7 @@
 </template>
  
 <script lang='ts'>
-import { computed, defineComponent,reactive } from 'vue';
+import { computed, defineComponent,reactive,onMounted} from 'vue';
 import TemplateList from '../components/TemplateList.vue';
 // 使用vuex的store
 import { GlobalDataProps } from '../store/index';
@@ -29,6 +29,9 @@ export default defineComponent({
     //     {id:5,coverImage:"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"},
     // ]);
 
+    onMounted(()=>{
+        store.dispatch("fetchTemplates") // 触发的是action里的fetchTemplates 方法
+    })
     return{
         testData,
     };

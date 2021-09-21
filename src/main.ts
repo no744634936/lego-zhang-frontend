@@ -17,6 +17,10 @@ import 'zhang-lego-components/dist/bundle.css'
 //cropper.js的样式文件
 import 'cropperjs/dist/cropper.css';
 
+import axios from "axios"
+const baseBackendUrl='http://182.92.168.192:8081'
+axios.defaults.baseURL=`${baseBackendUrl}/api/`
+
 const app=createApp(App)
 //2,将 ant-design-vue 放进app当中
 app.use(Antd)

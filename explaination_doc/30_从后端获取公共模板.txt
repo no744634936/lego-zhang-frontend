@@ -1,0 +1,30 @@
+
+main.ts 里写上
+
+    import axios from "axios"
+    const baseBackendUrl='http://182.92.168.192:8081'
+    axios.defaults.baseURL=`${baseBackendUrl}/api/`
+
+
+
+store/templates.ts 里写上
+
+    actions:{
+        fetchTemplates(context){
+            return axios.get('/templates').then(resp=>{
+                context.commit("fetchTemplates",resp.data)
+            })
+        }
+    },
+
+    mutations:{
+        fetchTemplates(state,respData: RespListData<TemplateProps>){
+            state.data=respData.data.list
+        }
+    }
+
+Home.vue 里写上
+
+    onMounted(()=>{
+        store.dispatch("fetchTemplates") // 触发的是action里的fetchTemplates 方法
+    })

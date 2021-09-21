@@ -1,5 +1,8 @@
+import { context } from "ant-design-vue/lib/vc-image/src/PreviewGroup";
+import axios from "axios";
 import {Module} from "vuex"
 import {GlobalDataProps} from "./index"
+import { RespListData } from "./respTypes"
 
 // 1,定义元素的数据格式
 // template的数据格式
@@ -32,7 +35,7 @@ export const testData: TemplateProps[]=[
 const templates: Module<TemplatesProps,GlobalDataProps>={
     //本地state
     state:{
-        data:testData,
+        data:[],
     },
     //对数据进行筛选的方法可以放在getters里
     //Note that getters accessed via methods will run each time you call them, and the result is not cached.
@@ -44,6 +47,24 @@ const templates: Module<TemplatesProps,GlobalDataProps>={
             return (id: number)=>{
                 return state.data.find(elem=>elem.id===id)
             }
+        }
+    },
+
+    //由于mutation必须是同步函数，所以使用actions
+    //actions跟mutation很相似，actions提交的是mutation，
+    //actions可以使用异步函数
+    //里面的方法可以接收context参数
+    actions:{
+        fetchTemplates(context){
+            return axios.get('/templates').then(resp=>{
+                context.commit("fetchTemplates",resp.data)
+            })
+        }
+    },
+
+    mutations:{
+        fetchTemplates(state,respData: RespListData<TemplateProps>){
+            state.data=respData.data.list
         }
     }
     
