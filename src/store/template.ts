@@ -12,7 +12,7 @@ export interface TemplateProps{
 }
 
 //2,定义当前模块的整体数据格式
-// 注意是templatesProps 是复数
+// 注意是TemplatesProps 是复数
 export interface TemplatesProps{
     data: TemplateProps[];
 }
