@@ -1,5 +1,7 @@
 <template>
     <!-- component 根据tag属性的值，自动转变标签类型 -->
+    <!-- 写成下面这样的div标签也是可以的 -->
+    <!-- <div :style="style_props" class="l-text-component" @click="handleClick"> {{text}} </div> -->
     <component :is="tag" :style="style_props" class="l-text-component" @click="handleClick">
     {{text}}  
     </component>
@@ -11,7 +13,7 @@ import {component_default__props,text_component_css_props_name_arr} from "../def
 import componentCommonFunc from '../hooks/componentCommonFunc'
 
 export default defineComponent({
-    name:"l-text",
+    name:"LText",
     props:{
         tag:{type:String,default:'div'},
         ...component_default__props

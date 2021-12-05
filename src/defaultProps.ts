@@ -53,7 +53,7 @@ export const generate_component_props =(props_obj: {[key: string]: any})=> {
 
     for (const key in props_obj) {
         component_props[key]={
-            type:key.constructor, // 直接写String就可以了吧
+            type:key.constructor, // 这个属性是字符型还是数值型之类的
             default:props_obj[key]
         }
     }
