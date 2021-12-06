@@ -9,6 +9,8 @@
     </div> 
     -->
     <div class="component-list">
+        <!-- @click="onItemClick(item)" 被点击之后，触发 onItemClick(data) 函数，将data 传给 父组件Editor.vue -->
+        <!-- 父组件里用 onItemClick="addItem" 接收传来的数据，触发 addItem(props) 函数，将子组件传过来的数据添加到store中-->
         <div class="component-item" v-for="(item,index) in list" :key="index"  @click="onItemClick(item)">
              <!-- v-bind="item"  的意思就是将 item 这个对象传给LText里的props 这是v-bind单独使用时的作用-->
             <LText v-bind="item"></LText>

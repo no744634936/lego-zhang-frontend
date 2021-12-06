@@ -3,6 +3,9 @@
 没有好好地处理，优化泛型
 
 
+// view/Editor.vue 左侧需要一个组件列表，列表要单独做成一个组件，列表里的项目也是一个组件
+
+
 // defaultTextTemplatesList.ts
    1,写一些文本框，按钮的属性,(这些数据是预设的可以写死在本地，也可以从服务器端获得，现在采用的方法是写死在本地)
 
@@ -38,7 +41,11 @@
     store把 item 添加到 state.components里
 
 
-    Editor.vue里的编辑器就显示出新添加的数据
+    Editor.vue文件里使用了
+    const components=computed(()=>{return store.state.editor.components}) 
+    components 是一个响应式对象
+    computed()可以实时监控store里面数据的变化并实时更新components的内容
+    的编辑器页面也就会实时显示出新添加的数据
 
  // store/editor.ts
 
