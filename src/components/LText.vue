@@ -18,12 +18,7 @@ export default defineComponent({
     },
     
     setup(props){
-
-        console.log("props",props);
-    
         const {style_props,handleClick}=componentCommonFunc(props,text_component_css_props_name_arr)
-        
-        console.log("style_props",style_props);
         
         return {
             style_props,

@@ -1,4 +1,8 @@
 <template>
+  <!-- :class="{ active: active }" 这个表达式，一开始是 :class="{ active: false }"  的-->
+  <!-- 父节点将active设置为true并传进来之后变为，:class="{ active: true }" -->
+  <!-- 此时div的class属性里会多一个active值 变成这样 <div class="edit-wrapper active"></div> -->
+  <!-- 然后div的border 就会变为蓝色，呈选中的状态 -->
   <div class="edit-wrapper" @click="onItemClick(id)" :class="{ active: active }">
     <slot></slot>
   </div>
