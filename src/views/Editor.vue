@@ -79,20 +79,10 @@ export default defineComponent({
 
     setup(){
         const store=useStore<GlobalDataProps>();
-
-
         const components=computed(()=>{return store.state.editor.components})
 
-        // console.log("components",components);
         const currentEditedElement= computed(()=>store.getters.getCurrentEditedElement)
         
-        // 就算 const components=null ，不需要额外的判断
-        // template 里面的v-for="component in components" 也不会报错。 这是因为in 关键字的作用
-
-        // 但是 const currentEditedElement=null 的时候
-        // template 里面的{{currentEditedElement&& currentEditedElement.props}} 就要有额外的判断currentEditedElement&&
-        // 如果只是这样{{currentEditedElement.props}}，就会报错
-
         const addItem=(props: any)=>{
             // 用store来进行state的更新.
             // props 是ComponentsList.vue那边的onItemClick(item)中的item
