@@ -61,26 +61,6 @@ export default defineComponent({
     // console.log("mapPropsToForms",mapPropsToForms);
     // console.log("resultProps",resultProps);
 
-    // 为什么这个方法不行，resultProps 不会随着点击而改变，为什么上面那个方法可以呢？
-    // interface LooseObject {
-    //     [key: string]: object;
-    // }
-    // const finalProps: LooseObject ={}
-
-    // const hasProperty = (obj: object, key: string) => {
-    //     // eslint 里面不能用 obj.hasOwnProperty(key)
-    //     // 必须使用 Object.prototype.hasOwnProperty.call(obj, key)
-    //     return !!(obj) && Object.prototype.hasOwnProperty.call(obj, key);
-    // }
-
-    // Object.entries(props.props).forEach(([key, val]) => {
-    //     if( hasProperty(mapPropsToForms,key) ){
-    //         finalProps[key] = {component: mapPropsToForms[key].component, value: val}
-    //     }
-    // });
-
-    // const resultProps= computed(()=>{return finalProps})
-
     return {
       resultProps
     }
