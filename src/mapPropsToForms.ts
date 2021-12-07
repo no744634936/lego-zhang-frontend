@@ -9,7 +9,6 @@ interface ObjectWithComponent{
 
 interface LooseObject {
     [key: string]: ObjectWithComponent;
-    
 }
 
 export const mapPropsToForms: LooseObject={

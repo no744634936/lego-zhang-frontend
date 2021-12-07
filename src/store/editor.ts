@@ -1,6 +1,6 @@
 import {Module} from "vuex"
 import {GlobalDataProps} from "./index"
-import { uuid } from 'uuidv4'
+import { v4 } from 'uuid'
 
 // 这样命名interface比较好一点
 export interface ComponentDataProps{
@@ -22,9 +22,9 @@ export interface EditorDataProps{
 }
 
 const testComponents: ComponentDataProps[]= [
-    { id: uuid(), name: 'l-text', props: { text: 'hello', fontSize: '30px', color: 'red', 'lineHeight': '1', textAlign: 'left', fontFamily: '' }},
-    { id: uuid(), name: 'l-text', props: { text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' }},
-    { id: uuid(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' }}
+    { id: v4(), name: 'l-text', props: { text: 'hello', fontSize: '30px', color: 'red', 'lineHeight': '1', textAlign: 'left', fontFamily: '' }},
+    { id: v4(), name: 'l-text', props: { text: 'hello2', fontSize: '10px', fontWeight: 'bold', 'lineHeight': '2', textAlign: 'left', fontFamily: '' }},
+    { id: v4(), name: 'l-text', props: { text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' }}
   ]
 
 const editor: Module<EditorDataProps,GlobalDataProps>={
@@ -38,7 +38,7 @@ const editor: Module<EditorDataProps,GlobalDataProps>={
         // props 是从Editor.vue 中的 const addItem=(props: any) 方法传过来的
         addComponent(state,props){
             const newComponent: ComponentDataProps={
-                id:uuid(),
+                id:v4(),
                 name:"l-text",
                 props
             }
