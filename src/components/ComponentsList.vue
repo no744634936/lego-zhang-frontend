@@ -1,10 +1,4 @@
 <template>
-    <!-- 
-        为什么要用div来隔离一下呢？因为需要在LText这个组件上添加click事件，但是并不想影响到组件本身的click事件？
-    <div class="component-list">
-        <LText v-for="(item,index) in list" :key="index" v-bind="item" class="component-item"></LText>
-    </div> 
-    -->
     <div class="component-list">
         <div class="component-item" v-for="(item,index) in list" :key="index"  @click="onItemClick(item)">
              <!-- v-bind="item"  的意思就是将 item 这个对象传给LText里的props 这是v-bind单独使用时的作用-->
