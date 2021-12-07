@@ -1,25 +1,23 @@
-
 将选中的组件的属性，以不同的类型的表单呈现在右侧
 store/editor.ts
 
 拿到了选中组件的属性，我要如何将这些属性变成表单？
 把组件传给一个组件，PropsTable.vue这个组件负责把属性变成表单
+给所有属性添加一个component 属性
 
-
-src/ mapPropsToForms.ts
+// src/ mapPropsToForms.ts
   1,用 antd design view里的哪一种组件来在右侧显示编辑器里选中的组件的属性
 
     例如: text:{component:'a-input'}
     的意思就是用 antd design view 的 a-input组件来显示 text
 
+// components/PropsTable.vue
 
-// compnents/PropsTable.vue
-
-  2,将{ text:"hello",  ...} 和{ text:{component:'a-input'}, ...} 
+  2,将属性{ text:"hello",  ...} 和需要添加的component { text:{component:'a-input'}, ...} 
     组合变为 {text:{component:'a-input',value:'hello'},...}
 
   3,将 {text:{component:'a-input',value:'hello'},...} 里的hello通过PropsTable.vue组件
-    展示在editor的右侧
+    使用antd design view 的 a-input组件来展示在editor的右侧
 
 
 
