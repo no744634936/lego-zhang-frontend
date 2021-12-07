@@ -1,6 +1,8 @@
 import {Module} from "vuex"
 import {GlobalDataProps} from "./index"
-import { uuid } from 'uuidv4'
+// import { uuid } from 'uuidv4'
+import { v4 } from "uuid";
+
 
 // 这样命名interface比较好一点,表示一个组件里有哪些内容
 export interface ComponentDataProps{
@@ -24,9 +26,9 @@ export interface EditorDataProps{
 }
 
 const testComponents: ComponentDataProps[]=[
-    {id:uuid(), name:'l-text',props:{text: 'hello'}},
-    {id:uuid(), name:'l-text',props:{text: 'hello2'}},
-    {id:uuid(), name:'l-text',props:{text: 'hello3'}}
+    {id:v4(), name:'l-text',props:{text: 'hello'}},
+    {id:v4(), name:'l-text',props:{text: 'hello2'}},
+    {id:v4(), name:'l-text',props:{text: 'hello3'}}
 ]
 
 const editor: Module<EditorDataProps,GlobalDataProps>={
