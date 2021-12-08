@@ -1,5 +1,5 @@
-编辑表单中的值，在值更新的同时将数据更新至页面
 
+// 组件的适配
 ant design vue 里面
 
 有些组件事靠 :value 来显示值的比如<a-input>
@@ -49,8 +49,19 @@ ant design vue 里面
 }
 
 
-//   PropsTable.vue 文件里使用 v-on="value.eventActiion" 将数据发送给Editor.vue
 
 
-// Editor.vue 用 handleChangeValue 方法接收到传过来的数据然后更新store里面的数据
+编辑表单中的值，在值更新的同时将数据更新至页面
+
+首先数据从store里被取出来，放进组件里面，被显示在editor.vue 页面，
+然后组件被点击就按顺序执行  onItemClick-->setElementActive-->setElementActive 方法
+更新store (currentElement被赋值)，组件被选中，
+store里的数据内容发生变化，那么editor.vue 页面与store相关的响应式对象就自动发生变化，
+把变化的组件属性交给右侧PropsTable.vue组件，渲染成表单
+
+PropsTable.vue 文件里使用 v-on="value.eventAction" 将数据发送给Editor.vue
+
+Editor.vue 用 handleChangeValue 方法接收到传过来的数据然后更新store里面的数据
+
+store里的数据内容发生变化，那么editor.vue 页面与store相关的响应式对象就自动发生变化，
 

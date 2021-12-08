@@ -3,6 +3,10 @@
     <div v-for="(value, key) in resultProps"  :key="key"  class="prop-item">
         <span class="label" v-if="value.text">{{value.text}}</span>
         <!--value.eventActiion 的内容为 {change: (e: any)=>{context.emit("changeValue",{key,value:e})}} -->
+        <!-- v-on="value.eventActiion"  跟下面这种写法是一个意思 -->
+        <!-- :change="changeFunc(e)" -->
+        <!-- const changeFunc=(e: any)=>{context.emit("changeValue",{key,value:e})} -->
+        <!-- 然后父组件，通过 @changeValue="handleChangeValue" 中的 handleChangeValue 拿到传递过去的数据做处理 -->
         <component
             v-if="value" 
             :is="value.component" 
@@ -68,16 +72,19 @@ export default defineComponent({
               // 给item添加eventName 对应的事件，每一个事件名所对应的方法
               // 注意[eventNameKey] 必须使用中括号，改成[item.eventName] 也是不行的
               // e代表的是这个change 事件
-              // console.log("event",e); // e 因为component的不同，内容也千奇百怪，没有办法发送给父组件后直接更新到store里去
-              // item.eventActiion = {[eventNameKey]: (e: any)=>{context.emit("changeValue",{key,value: e})}}
+              // console.log("event",e); // 因为component的不同，e的内容也千奇百怪，没有办法发送给父组件后直接更新到store里去
+              // 所以要使用transformEventValue(e) 方法
+              // transformEventValue(e) 可以自定义要从里面取出什么东西
+              // 目前的作用仅仅就是将修改后的值从e里面取出来
 
               const { transformEventValue }= item
               item.eventActiion = {[eventNameKey]: (e: any)=>{context.emit("changeValue",{key,value: transformEventValue ? transformEventValue(e) : e})}}
-
+              //例:   item.eventActiion  等于  {key: 'text', value: 'hello23'}
+              
               result[key] = item
               
           }
-            return result
+            return result  
         }, {} )
     })
 
