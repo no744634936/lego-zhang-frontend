@@ -1,8 +1,41 @@
-将数据中的html元素渲染到template里面去
+
+改进字体下拉菜单,字体下拉菜单的选项要显示对应字体的样子，这该怎么做呢？
+
+
+
+----------------------------------------------------------
+<component 
+    :is="value.subComponent" 
+    v-for="(option,k) in value.options" 
+    :key="k"
+    :value="option.value"
+>
+    {{option.text}}
+</component>
+-------------------------------------------------------------
+简化 后
+
+<component >
+    {{option.text}}
+</component>
+
+可以看到 
+component之间显示的是{{option.text}} ，他是一个字符串
+现在我想在component之间显示一个带样式的字符串，
+
+<component >
+    <p class="test" style="color:red"> test test </p>
+</component>
+
+也就是将带有样式的html标签放进到component之间
+这就要使用到vNode了
+
+----------------------------------------------------------
 
 
 1，将 mapPropsToForms.ts 文件改为mapPropsToForms.tsx文件(也就是jsx文件)
-   就可以将html内容存入数据里面了
+   就可以将  <span style={{fontFamily: e.value}}>{e.text}</span> 
+   这样html内容存入object里面了
 
 
 const fongFamilyOptionArr = [
@@ -13,9 +46,9 @@ const fongFamilyOptionArr = [
 ]
 
 const fongFamilyOptionHtmlArr = fongFamilyOptionArr.map(e=>{
-    // <span style={{fontFamily:e.value}}>{e.text}</span> 这种 html元素是不能直接取出来放进template里的
+    // <span style={{fontFamily:e.value}}>{e.text}</span> 这种 html元素是不能直接取出来放进component里的
     // 要用 RenderVnode 组件处理一下，这个组件是固定写法，
-    // <span style={{fontFamily: e.value}}>{e.text}</span> 会被转化成一个object
+
     return {text: <span style={{fontFamily: e.value}}>{e.text}</span>, value: e.value,}
 
 })
@@ -33,12 +66,17 @@ fontFamily: {
 
 
 
-2，建立 RenderVnode 组件，可以用来渲染包含span标签的object  
-   也可以渲染string 
+2，建立 RenderVnode 组件，render组件是vue三种组件种的一种
 
 
-3，PropsTable.vue 文件就可以引用RenderVnode.vue 组件来渲染出fontFamily，跟 textAlign 的 options 
+3，PropsTable.vue 文件就可以引用RenderVnode.vue 
+   将<span style={{fontFamily:e.value}}>{e.text}</span> 传给RenderVnode.vue 
+   就可以使用
 
+   <component>
+        <RenderVnode :vNode="option.text"></RenderVnode>
+   </component>
+   
+   来将带有样式的html标签放进到component之间了
 
-
-    然后在下拉菜单的选项中嵌入html标签span了
+   然后在下拉菜单的选项就嵌入了html标签span

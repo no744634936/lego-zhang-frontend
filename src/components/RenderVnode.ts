@@ -1,4 +1,4 @@
-// 固定写法
+// 固定写法，死记就可以了
 import { defineComponent } from "vue";
 
 const RenderVnode = defineComponent({
