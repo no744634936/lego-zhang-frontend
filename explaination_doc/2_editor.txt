@@ -1,6 +1,0 @@
-npm install uuidv4 --save 
-
-建立一个store/editor.ts文件 并将数据导入  view/Editor.vue里去
-
-
-
