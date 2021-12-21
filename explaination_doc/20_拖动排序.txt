@@ -1,9 +1,0 @@
-1,  npm i -S vuedraggable@next 自带type文件
-
-2, 修改LayerList.vue
-
-3, 修改inlineEdit 
-   // innerValue是从父组件layList.vue 传过来的，当props更新的时候，也要将对应的innerValue做个更新
-    watch(() => props.value, (newValue) => {
-      innerValue.value = newValue
-    })

@@ -1,6 +1,5 @@
 
 main.ts 里写上
-
     import axios from "axios"
     const baseBackendUrl='http://182.92.168.192:8081'
     axios.defaults.baseURL=`${baseBackendUrl}/api/`
@@ -8,11 +7,13 @@ main.ts 里写上
 
 
 store/templates.ts 里写上
+mutations里的方法必须都是同步的，因为异步会破坏vuex的可追溯性
+actions里面可以使用异步方法
 
     actions:{
         fetchTemplates(context){
             return axios.get('/templates').then(resp=>{
-                context.commit("fetchTemplates",resp.data)
+                context.commit("fetchTemplates",resp.data)  //触发fetchTemplates 这个mutation
             })
         }
     },
@@ -22,6 +23,8 @@ store/templates.ts 里写上
             state.data=respData.data.list
         }
     }
+
+
 
 Home.vue 里写上
 
