@@ -1,33 +1,79 @@
+每次测试api的时候都要打开后端项目很麻烦，用json-server可以做
 
-main.ts 里写上
-    import axios from "axios"
-    const baseBackendUrl='http://182.92.168.192:8081'
-    axios.defaults.baseURL=`${baseBackendUrl}/api/`
+npm install json-server --save-dev
 
+根目录下创建 db.json 文件
 
+启动json-server: 
+npx json-server --watch db.json
 
-store/templates.ts 里写上
-mutations里的方法必须都是同步的，因为异步会破坏vuex的可追溯性
-actions里面可以使用异步方法
+可以看到有
+http://localhost:3000/posts
+http://localhost:3000/comments
+两个路由
 
-    actions:{
-        fetchTemplates(context){
-            return axios.get('/templates').then(resp=>{
-                context.commit("fetchTemplates",resp.data)  //触发fetchTemplates 这个mutation
-            })
+可以通过
+http://localhost:3000/posts 
+获取数据
+
+也可以通过
+http://localhost:3000/posts/1
+获取一个数据
+
+还可以使用postman 将json数据
+        {
+            "id":5,
+            "title":"json-server4",
+            "author":"wang"
         }
-    },
+通过post方法(body-->raw-->json(application/json) )  
 
-    mutations:{
-        fetchTemplates(state,respData: RespListData<TemplateProps>){
-            state.data=respData.data.list
-        }
-    }
+使用 http://localhost:3000/posts 路由添加到db.json文件里去
 
 
+还可以使用postman 使用delete方法将 
+通过 http://localhost:3000/posts/3 路由
+将3号post删掉
 
-Home.vue 里写上
 
-    onMounted(()=>{
-        store.dispatch("fetchTemplates") // 触发的是action里的fetchTemplates 方法
-    })
+
+
+// 修改路由，修改路由返回数据的格式，自定义路由
+1，根目录下创建 mockServer.js文件
+
+启动server
+node mockServer.js
+
+下载nodemon 来监视服务器，api的数据被修改之后自动重启服务器
+npm install nodemon --save-dev
+
+package.json 中添加一个命令
+"mock" : "nodemon ./mockServer.js"
+
+然后 直接执行 npm run mock 就可以了
+
+
+// 生成token  
+
+npm install jsonwebtoken --save-dev
+mockServer.js文件里使用 jsonwebtoken
+
+使用路由
+http://localhost:3000/api/users/loginByPhoneNumber
+
+通过post方法(body-->raw-->json(application/json) )  
+将下面的数据post到服务器
+{
+	"phoneNumber":"1234556",
+	"verifyCode":"1234"
+}
+
+
+
+// 使用token请求数据
+
+将生成的token放入postman的headers里面
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+通过get方法 使用路由
+http://localhost:3000/api/works

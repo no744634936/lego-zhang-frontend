@@ -1,0 +1,61 @@
+{
+  "posts": [
+        {
+        "id": 1,
+        "title": "json-server",
+        "author": "zhang"
+        },
+        {
+        "id": 2,
+        "title": "json-server",
+        "author": "yang"
+        },
+        {
+        "id": 3,
+        "title": "json-server3",
+        "author": "li"
+        },
+        {
+        "id": 4,
+        "title": "json-server4",
+        "author": "wang"
+        },
+        {
+        "id": 5,
+        "title": "json-server4",
+        "author": "wang"
+        }
+  ],
+  "comments": [
+        {
+        "id": 1,
+        "body": "some comments"
+        }
+  ],
+  "works":[
+        {
+            "id":1,
+            "uuid":"8e55",
+            "title":"意志力",
+            "desc":"无",
+            "contentId":"123jhahgh33hgag5j23578bfh",
+            "publishContentId":"ghuyet64859jgnd6gh3jg",
+            "author":"zhanghaifeng",
+            "coverImg":"https://www.cellula.com.tw/resources/lp/img/01.jpg",
+            "isTemplate":"true",
+            "status":2
+        },
+        {
+            "id":2,
+            "uuid":"8e55",
+            "title":"学习力",
+            "desc":"无",
+            "contentId":"ahgh33hgag5j23578bfh",
+            "publishContentId":"59jgnd6gh3jg",
+            "author":"wang",
+            "coverImg":"https://img1.sycdn.imooc.com/szimg/5da13cab09466e9105400306-280-160.jpg",
+            "isTemplate":"true",
+            "status":2
+        }
+  ]
+}
